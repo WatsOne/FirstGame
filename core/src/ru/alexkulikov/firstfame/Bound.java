@@ -16,7 +16,7 @@ public class Bound extends GameObject {
 
         ChainShape shape = new ChainShape();
         shape.createChain(new Vector2[]{new Vector2(0, y + 5), new Vector2(0, 0), new Vector2(20, 0), new Vector2(20, y + 5)});
-        createBody(shape, BodyDef.BodyType.StaticBody);
+//        createBody(shape, BodyDef.BodyType.StaticBody, 0.4f, 8, 0.4f);
     }
 
     @Override

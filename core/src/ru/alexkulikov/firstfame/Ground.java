@@ -8,10 +8,10 @@ public class Ground extends GameObject {
 
     public Ground(World world) {
         super(world);
-        setBounds(10, 0.5f, 20, 1);
+        setBounds(50, 0.5f, 200, 1);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(10, 0.5f);
-        createBody(shape, BodyDef.BodyType.StaticBody);
+        shape.setAsBox(100, 0.5f);
+        createBody(shape, ObjectType.ground, BodyDef.BodyType.StaticBody, 0.4f, 8, 0.2f);
     }
 }

@@ -13,10 +13,10 @@ public class Ball extends GameObject {
         setBounds(3, 6.5f, 1, 1);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f, 0.5f);
-        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, 0.4f, 8, 0.4f);
+        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, 0.3f, 10, 0.6f);
     }
 
     public void jump(float power) {
-        body.applyLinearImpulse(new Vector2(power * 0.8f, power * 1.4f), body.getPosition(),true);
+        body.applyLinearImpulse(new Vector2(power * 0.8f, power * 2.5f), body.getPosition(), true);
     }
 }

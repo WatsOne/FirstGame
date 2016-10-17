@@ -10,6 +10,6 @@ public class Box extends GameObject {
         setBounds(x, y, 2 * h, 2 * w);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(h, w);
-        createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, 0.1f, 10, 0.7f);
+        createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, 0.1f, 10, 0.9f);
     }
 }

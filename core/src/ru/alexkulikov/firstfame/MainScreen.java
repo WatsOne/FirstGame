@@ -3,6 +3,8 @@ package ru.alexkulikov.firstfame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -12,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
-import java.util.Iterator;
 
 public class MainScreen implements Screen {
 
@@ -41,9 +41,9 @@ public class MainScreen implements Screen {
 
         createPlatform(3);
         createPlatform(20);
-        createPlatform(37);
-        createPlatform(54);
-        createPlatform(71);
+        createPlatform(40);
+        createPlatform(57);
+        createPlatform(76);
 
         stage.setDebugAll(true);
 
@@ -52,9 +52,18 @@ public class MainScreen implements Screen {
             @Override
             public boolean keyTyped(InputEvent event, char character) {
                 if (character == 'z') {
-                    stage.setViewport(new FitViewport(30, 20));
                     ball.jump(-100);
                 }
+
+                if (character == 'x') {
+                    Gdx.app.log("zoom", String.valueOf(((OrthographicCamera) stage.getCamera()).zoom));
+//                    ((OrthographicCamera) stage.getCamera()).zoom += 1f;
+                }
+
+                if (character == 'c') {
+                    ((OrthographicCamera) stage.getCamera()).zoom -= 1f;
+                }
+
                 return true;
             }
 
@@ -67,7 +76,7 @@ public class MainScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                ball.jump(power);
+                ball.jump(65);
                 Gdx.app.log("Touch up", String.valueOf(power));
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -90,15 +99,16 @@ public class MainScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         rend.render(world, stage.getCamera().combined);
-        stage.getCamera().position.set(ball.getX() + 10, ball.getY() + 5, 0);
+        stage.getCamera().position.set(ball.getX() + 10, ball.getY() + 3, 0);
 
         if (power < 70f) {
             power++;
         }
 
-        world.step(1/60f, 4, 4);
+        world.step(1/60f, 6, 2);
         stage.act(delta);
         stage.draw();
+        updateZoom();
     }
 
     public void sweepDeadBodies() {
@@ -112,6 +122,11 @@ public class MainScreen implements Screen {
                 world.destroyBody(b);
             }
         }
+    }
+
+    private void updateZoom() {
+        float y = Math.max(Math.min(ball.getY(), 28), 8);
+        ((OrthographicCamera) stage.getCamera()).zoom = y/8;
     }
 
     @Override

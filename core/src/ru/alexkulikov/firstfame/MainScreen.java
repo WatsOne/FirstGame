@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,47 +21,33 @@ public class MainScreen implements Screen {
     private Stage stage;
 
     private Box2DDebugRenderer rend;
-    private Ball ball;
+
+    private Player player;
+    private Group boxesGroup;
 
     private float power;
+    private GameState state;
 
     @Override
     public void show() {
         world = new World(new Vector2(0, -10), true);
-        float y = 30 / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
+        float y = 12 / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
 
-        rend = new Box2DDebugRenderer();
-
-        stage = new Stage(new FitViewport(30, y));
+        stage = new Stage(new FitViewport(12, y));
 
         stage.addActor(new Ground(world));
 
-        ball = new Ball(world);
-        stage.addActor(ball);
-
-        createPlatform(3);
-        createPlatform(20);
-        createPlatform(40);
-        createPlatform(57);
-        createPlatform(76);
+        drawLevel();
 
         stage.setDebugAll(true);
+        rend = new Box2DDebugRenderer();
+        Gdx.input.setInputProcessor(stage);
 
         stage.addListener(new InputListener() {
-
             @Override
             public boolean keyTyped(InputEvent event, char character) {
-                if (character == 'z') {
-                    ball.jump(-100);
-                }
-
-                if (character == 'x') {
-                    Gdx.app.log("zoom", String.valueOf(((OrthographicCamera) stage.getCamera()).zoom));
-//                    ((OrthographicCamera) stage.getCamera()).zoom += 1f;
-                }
-
                 if (character == 'c') {
-                    ((OrthographicCamera) stage.getCamera()).zoom -= 1f;
+                    restart();
                 }
 
                 return true;
@@ -69,29 +55,16 @@ public class MainScreen implements Screen {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                sweepDeadBodies();
-                power = 0;
+                power = 0.2f;
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                ball.jump(65);
-                Gdx.app.log("Touch up", String.valueOf(power));
+                player.jump(power);
                 super.touchUp(event, x, y, pointer, button);
             }
         });
-
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    private void createPlatform(float x) {
-        stage.addActor(new Box(world, x, 1.5f, 0.5f, 0.5f));
-        stage.addActor(new Box(world, x, 2.5f,  0.5f, 0.5f));
-        stage.addActor(new Box(world, x, 3.5f, 0.5f, 0.5f));
-        stage.addActor(new Box(world, x, 4.5f, 0.5f, 0.5f));
-        stage.addActor(new Box(world, x, 5.5f, 0.5f, 0.5f));
-        stage.addActor(new Box(world, x, 6.5f, 2.5f, 0.5f));
     }
 
     @Override
@@ -99,10 +72,13 @@ public class MainScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         rend.render(world, stage.getCamera().combined);
-        stage.getCamera().position.set(ball.getX() + 10, ball.getY() + 3, 0);
 
-        if (power < 70f) {
-            power++;
+        if (state == GameState.run) {
+            stage.getCamera().position.set(player.getX() + 5, player.getY() + 1, 0);
+        }
+
+        if (power < 0.4f) {
+            power += 0.005f;
         }
 
         world.step(1/60f, 6, 2);
@@ -111,22 +87,55 @@ public class MainScreen implements Screen {
         updateZoom();
     }
 
-    public void sweepDeadBodies() {
-        Gdx.app.log("Ball position", String.valueOf(ball.getX()));
+    private void restart() {
+        state = GameState.restart;
 
+        player.remove();
+        player = null;
+
+        clearBoxes();
+        drawLevel();
+    }
+
+    private void drawLevel() {
+        createPlayer();
+
+        boxesGroup = new Group();
+        stage.addActor(boxesGroup);
+
+        PlatformBuilder.buildT(boxesGroup, world, 3, Material.wood);
+        PlatformBuilder.buildP(boxesGroup, world, 7, Material.ice);
+
+        state = GameState.run;
+    }
+
+    private void createPlayer() {
+        player = new Player(world);
+        player.setBounds(3, 4.0f, 0.4f, 0.4f);
+        player.createBody();
+        stage.addActor(player);
+    }
+
+    private void clearBoxes() {
+        boxesGroup.remove();
+        boxesGroup = null;
+        clearBoxesBodies();
+    }
+
+    public void clearBoxesBodies() {
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
         for (Body b : bodies) {
             BoxData data = (BoxData) b.getUserData();
-            if (data != null && data.getType() == ObjectType.box && (ball.getX() - b.getPosition().x > 20)) {
+            if (data != null && (data.getType() == ObjectType.box || data.getType() == ObjectType.player)) {
                 world.destroyBody(b);
             }
         }
     }
 
     private void updateZoom() {
-        float y = Math.max(Math.min(ball.getY(), 28), 8);
-        ((OrthographicCamera) stage.getCamera()).zoom = y/8;
+        float y = Math.max(Math.min(player.getY(), 10), 4);
+        ((OrthographicCamera) stage.getCamera()).zoom = y/4;
     }
 
     @Override

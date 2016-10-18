@@ -6,14 +6,17 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class Ball extends GameObject {
+public class Player extends GameObject {
 
-    public Ball(World world) {
+    public Player(World world) {
         super(world);
-        setBounds(3, 6.5f, 1, 1);
+    }
+
+    public void createBody() {
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(0.5f, 0.5f);
-        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, 0.3f, 10, 0.6f);
+        shape.setAsBox(0.2f, 0.2f);
+        Material material = Material.wood;
+        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
     }
 
     public void jump(float power) {

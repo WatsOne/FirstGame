@@ -8,7 +8,7 @@ public class Ground extends GameObject {
 
     public Ground(World world) {
         super(world);
-        setBounds(50, 0.5f, 200, 1);
+        setBounds(50, 0.0f, 200, 1);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(100, 0.5f);

@@ -111,7 +111,7 @@ public class MainScreen implements Screen {
 
     private void createPlayer() {
         player = new Player(world);
-        player.setBounds(3, 4.0f, 0.4f, 0.4f);
+        player.setBounds(3, 1.5f, 0.4f, 0.4f);
         player.createBody();
         stage.addActor(player);
     }
@@ -120,6 +120,8 @@ public class MainScreen implements Screen {
     private void updateZoom() {
         float y = Math.max(Math.min(player.getY(), 10), 4);
         ((OrthographicCamera) stage.getCamera()).zoom = y/4;
+
+//        ((OrthographicCamera) stage.getCamera()).zoom = 3;
     }
 
     @Override

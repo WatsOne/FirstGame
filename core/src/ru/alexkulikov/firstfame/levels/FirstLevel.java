@@ -9,8 +9,6 @@ import ru.alexkulikov.firstfame.Material;
 public class FirstLevel extends BaseLevel {
     private World world;
 
-    private static float X_POS = 3;
-
     public FirstLevel(World world) {
         super(world);
 
@@ -21,29 +19,50 @@ public class FirstLevel extends BaseLevel {
     public void buildGroups() {
         super.buildGroups();
         Group platformGroup = new Group();
+        float x = 3;
 
-        platformGroup.addActor(new Box(world, Material.wood, X_POS, 1.5f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.wood, X_POS, 1.9f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.wood, X_POS, 2.3f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.wood, X_POS, 2.8f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.wood, X_POS, 3.2f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.wood, X_POS, 3.6f, 1.0f, 0.2f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 0.7f, 0.2f, 0.2f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.1f, 1.0f, 0.2f));
         levelGroup.addActor(platformGroup);
 
         platformGroup = new Group();
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 7, 1.5f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 7, 1.9f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 7, 2.3f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 7, 2.8f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 7, 3.2f, 0.2f, 0.2f));
+        x += 3;
+        platformGroup.addActor(new Box(world, Material.wood, x, 0.9f, 0.2f, 0.4f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.5f, 1.0f, 0.2f));
+        levelGroup.addActor(platformGroup);
 
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 8.5f, 1.5f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 8.5f, 1.9f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 8.5f, 2.3f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 8.5f, 2.8f, 0.2f, 0.2f));
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 8.5f, 3.2f, 0.2f, 0.2f));
+        platformGroup = new Group();
+        x += 3;
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.1f, 0.2f, 0.6f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.9f, 1.0f, 0.2f));
+        levelGroup.addActor(platformGroup);
 
-        platformGroup.addActor(new Box(world, Material.ice, X_POS + 7.75f, 3.6f, 2.0f, 0.2f));
+        platformGroup = new Group();
+        x += 5;
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.1f, 0.2f, 0.6f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 2.3f, 0.2f, 0.6f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 3.1f, 1.0f, 0.2f));
+        levelGroup.addActor(platformGroup);
+
+        platformGroup = new Group();
+        x += 5;
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.5f, 0.2f, 1.0f));
+        platformGroup.addActor(new Box(world, Material.ice, x, 2.7f, 0.2f, 0.2f));
+        platformGroup.addActor(new Box(world, Material.ice, x, 3.1f, 1.0f, 0.2f));
+        levelGroup.addActor(platformGroup);
+
+        platformGroup = new Group();
+        x += 7;
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.1f, 0.2f, 0.6f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.9f, 0.2f, 0.2f));
+        platformGroup.addActor(new Box(world, Material.ice, x, 2.3f, 0.2f, 0.2f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 2.7f, 1.0f, 0.2f));
+        levelGroup.addActor(platformGroup);
+
+        platformGroup = new Group();
+        x += 4;
+        platformGroup.addActor(new Box(world, Material.wood, x, 0.7f, 0.2f, 0.2f));
+        platformGroup.addActor(new Box(world, Material.wood, x, 1.1f, 1.0f, 0.2f));
         levelGroup.addActor(platformGroup);
     }
 }

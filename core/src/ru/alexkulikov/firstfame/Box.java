@@ -20,6 +20,7 @@ public class Box extends GameObject {
         shape.setAsBox(h, w);
         createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
         setOrigin(h, w);
+
         if (material == Material.ice) {
             sprite = new Sprite(new Texture(Gdx.files.internal("ice.png")));
             sprite.setBounds(x, y, 2 * h, 2 * w);

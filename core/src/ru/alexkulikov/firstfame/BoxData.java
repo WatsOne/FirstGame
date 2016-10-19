@@ -11,4 +11,11 @@ public class BoxData {
     public ObjectType getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "BoxData{" +
+                "type=" + type +
+                '}';
+    }
 }

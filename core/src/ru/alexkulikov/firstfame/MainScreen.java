@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -28,6 +32,8 @@ public class MainScreen implements Screen {
 
     private float power;
     private GameState state;
+
+    private boolean canJump = true;
 
     @Override
     public void show() {
@@ -63,8 +69,41 @@ public class MainScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                player.jump(power);
+
+                boolean onPlatform = currentLevel.onPlatform(player.getContactBounds());
+                if (canJump || onPlatform) {
+                    player.jump(power);
+                    canJump = false;
+                }
                 super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                BoxData boxDataA = (BoxData) contact.getFixtureA().getBody().getUserData();
+                BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
+
+                if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
+                        boxDataB != null && boxDataB.getType() == ObjectType.box) {
+                    canJump = true;
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+//
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
             }
         });
     }

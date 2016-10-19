@@ -1,5 +1,6 @@
 package ru.alexkulikov.firstfame;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -37,6 +38,7 @@ public class GameObject extends Actor {
     @Override
     public void act(float delta) {
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+        setRotation(MathUtils.radiansToDegrees * body.getAngle());
         super.act(delta);
     }
 }

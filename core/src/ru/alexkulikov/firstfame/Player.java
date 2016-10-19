@@ -17,6 +17,7 @@ public class Player extends GameObject {
         shape.setAsBox(0.2f, 0.2f);
         Material material = Material.wood;
         createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
+        setOrigin(0.2f, 0.2f);
     }
 
     public void jump(float power) {

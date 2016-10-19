@@ -5,15 +5,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import ru.alexkulikov.firstfame.levels.BaseLevel;
+import ru.alexkulikov.firstfame.levels.FirstLevel;
+
 
 public class MainScreen implements Screen {
 
@@ -23,7 +24,7 @@ public class MainScreen implements Screen {
     private Box2DDebugRenderer rend;
 
     private Player player;
-    private Group boxesGroup;
+    private BaseLevel currentLevel;
 
     private float power;
     private GameState state;
@@ -37,6 +38,7 @@ public class MainScreen implements Screen {
 
         stage.addActor(new Ground(world));
 
+        currentLevel = new FirstLevel(world);
         drawLevel();
 
         stage.setDebugAll(true);
@@ -93,18 +95,16 @@ public class MainScreen implements Screen {
         player.remove();
         player = null;
 
-        clearBoxes();
+        currentLevel.clearLevel();
+
         drawLevel();
     }
 
     private void drawLevel() {
         createPlayer();
 
-        boxesGroup = new Group();
-        stage.addActor(boxesGroup);
-
-        PlatformBuilder.buildT(boxesGroup, world, 3, Material.wood);
-        PlatformBuilder.buildP(boxesGroup, world, 7, Material.ice);
+        currentLevel.buildGroups();
+        stage.addActor(currentLevel.getLevelGroup());
 
         state = GameState.run;
     }
@@ -116,22 +116,6 @@ public class MainScreen implements Screen {
         stage.addActor(player);
     }
 
-    private void clearBoxes() {
-        boxesGroup.remove();
-        boxesGroup = null;
-        clearBoxesBodies();
-    }
-
-    public void clearBoxesBodies() {
-        Array<Body> bodies = new Array<Body>();
-        world.getBodies(bodies);
-        for (Body b : bodies) {
-            BoxData data = (BoxData) b.getUserData();
-            if (data != null && (data.getType() == ObjectType.box || data.getType() == ObjectType.player)) {
-                world.destroyBody(b);
-            }
-        }
-    }
 
     private void updateZoom() {
         float y = Math.max(Math.min(player.getY(), 10), 4);

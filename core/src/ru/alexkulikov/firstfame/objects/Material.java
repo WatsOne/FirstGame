@@ -1,4 +1,4 @@
-package ru.alexkulikov.firstfame;
+package ru.alexkulikov.firstfame.objects;
 
 public enum Material {
     ice(0.92f, 0.01f, 0.01f),

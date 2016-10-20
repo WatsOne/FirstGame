@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.alexkulikov.firstfame.BoxData;
-import ru.alexkulikov.firstfame.ObjectType;
+import ru.alexkulikov.firstfame.objects.BoxData;
+import ru.alexkulikov.firstfame.objects.ObjectType;
 
 public abstract class BaseLevel {
     protected Group levelGroup;

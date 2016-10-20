@@ -1,4 +1,4 @@
-package ru.alexkulikov.firstfame;
+package ru.alexkulikov.firstfame.objects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;

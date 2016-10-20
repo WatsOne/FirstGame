@@ -18,6 +18,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import ru.alexkulikov.firstfame.levels.BaseLevel;
 import ru.alexkulikov.firstfame.levels.FirstLevel;
+import ru.alexkulikov.firstfame.objects.BoxData;
+import ru.alexkulikov.firstfame.objects.Ground;
+import ru.alexkulikov.firstfame.objects.ObjectType;
 
 
 public class MainScreen implements Screen {
@@ -27,7 +30,7 @@ public class MainScreen implements Screen {
 
     private Box2DDebugRenderer rend;
 
-    private Player player;
+    private ru.alexkulikov.firstfame.objects.Player player;
     private BaseLevel currentLevel;
 
     private float power;
@@ -82,10 +85,10 @@ public class MainScreen implements Screen {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                BoxData boxDataA = (BoxData) contact.getFixtureA().getBody().getUserData();
-                BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
+                ru.alexkulikov.firstfame.objects.BoxData boxDataA = (ru.alexkulikov.firstfame.objects.BoxData) contact.getFixtureA().getBody().getUserData();
+                ru.alexkulikov.firstfame.objects.BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
 
-                if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
+                if (boxDataA != null && boxDataA.getType() == ru.alexkulikov.firstfame.objects.ObjectType.player &&
                         boxDataB != null && boxDataB.getType() == ObjectType.box) {
                     canJump = true;
                 }
@@ -149,7 +152,7 @@ public class MainScreen implements Screen {
     }
 
     private void createPlayer() {
-        player = new Player(world);
+        player = new ru.alexkulikov.firstfame.objects.Player(world);
         player.setBounds(3, 1.5f, 0.4f, 0.4f);
         player.createBody();
         stage.addActor(player);

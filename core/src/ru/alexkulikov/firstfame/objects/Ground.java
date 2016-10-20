@@ -1,4 +1,4 @@
-package ru.alexkulikov.firstfame;
+package ru.alexkulikov.firstfame.objects;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;

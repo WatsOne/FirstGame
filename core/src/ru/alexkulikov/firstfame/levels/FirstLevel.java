@@ -3,8 +3,8 @@ package ru.alexkulikov.firstfame.levels;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import ru.alexkulikov.firstfame.Box;
-import ru.alexkulikov.firstfame.Material;
+import ru.alexkulikov.firstfame.objects.Box;
+import ru.alexkulikov.firstfame.objects.Material;
 
 public class FirstLevel extends BaseLevel {
     private World world;

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import ru.alexkulikov.firstfame.levels.BaseLevel;
@@ -42,22 +44,28 @@ public class MainScreen implements Screen {
     private boolean canJump = true;
 
     private ShapeRenderer shapeRenderer;
+    private float y;
 
     @Override
     public void show() {
         shapeRenderer = new ShapeRenderer();
         world = new World(new Vector2(0, -10), true);
-        float y = 12 / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
+        y = 12 / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
 
         stage = new Stage(new FitViewport(12, y));
 
         stage.addActor(new Ground(world));
 
         currentLevel = new FirstLevel(world);
+
+        Image background = new Image(TextureLoader.getBackground());
+        background.setBounds(0, 0.5f, 12 * 2, y/1.68f*2);
+        stage.addActor(background);
+
         drawLevel();
 
-        stage.setDebugAll(true);
-        rend = new Box2DDebugRenderer();
+        //stage.setDebugAll(true);
+        //rend = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(stage);
 
         stage.addListener(new InputListener() {
@@ -90,8 +98,8 @@ public class MainScreen implements Screen {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                ru.alexkulikov.firstfame.objects.BoxData boxDataA = (ru.alexkulikov.firstfame.objects.BoxData) contact.getFixtureA().getBody().getUserData();
-                ru.alexkulikov.firstfame.objects.BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
+                BoxData boxDataA = (ru.alexkulikov.firstfame.objects.BoxData) contact.getFixtureA().getBody().getUserData();
+                BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
 
                 if (boxDataA != null && boxDataA.getType() == ru.alexkulikov.firstfame.objects.ObjectType.player &&
                         boxDataB != null && boxDataB.getType() == ObjectType.box) {
@@ -118,12 +126,12 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
-        rend.render(world, stage.getCamera().combined);
+        //rend.render(world, stage.getCamera().combined);
 
         if (state == GameState.run) {
-            stage.getCamera().position.set(player.getX() + 5, player.getY() + 1, 0);
+            stage.getCamera().position.set(player.getX() + 5, player.getY() + y/12, 0);
         }
 
         if (power < 0.4f) {

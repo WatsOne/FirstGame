@@ -11,5 +11,6 @@ public class DesktopLauncher {
 		config.vSyncEnabled = true;
 		config.width = 800;
 		config.height = 600;
+		config.samples = 3;
 	}
 }

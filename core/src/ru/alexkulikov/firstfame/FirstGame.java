@@ -6,6 +6,7 @@ public class FirstGame extends Game {
 	
 	@Override
 	public void create () {
+		TextureLoader.load();
 		setScreen(new MainScreen());
 	}
 }

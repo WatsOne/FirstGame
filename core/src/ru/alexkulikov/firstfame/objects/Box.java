@@ -9,6 +9,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import ru.alexkulikov.firstfame.TextureLoader;
+
 public class Box extends GameObject {
 
     private Sprite sprite;
@@ -21,11 +23,17 @@ public class Box extends GameObject {
         createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
         setOrigin(h, w);
 
-        if (material == Material.ice) {
-            sprite = new Sprite(new Texture(Gdx.files.internal("ice.png")));
-            sprite.setBounds(x, y, 2 * h, 2 * w);
-            sprite.setOriginCenter();
+        switch (material) {
+            case ice:
+                sprite = new Sprite(TextureLoader.getIce());
+                break;
+            case wood:
+                sprite = new Sprite(TextureLoader.getWood());
+                break;
         }
+
+        sprite.setBounds(x, y, 2 * h, 2 * w);
+        sprite.setOriginCenter();
     }
 
     @Override

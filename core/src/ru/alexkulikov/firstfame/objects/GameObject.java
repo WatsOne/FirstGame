@@ -1,7 +1,6 @@
 package ru.alexkulikov.firstfame.objects;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -13,7 +12,6 @@ public class GameObject extends Actor {
 
     protected Body body;
     private World world;
-    private Rectangle contactBounds;
 
     public GameObject(World world) {
         this.world = world;
@@ -35,19 +33,12 @@ public class GameObject extends Actor {
         fDef.friction = friction;
 
         body.createFixture(fDef);
-
-        contactBounds = new Rectangle();
     }
 
     @Override
     public void act(float delta) {
         setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         setRotation(MathUtils.radiansToDegrees * body.getAngle());
-        contactBounds.set(getX(), getY(), getWidth() + 0.2f, getHeight() + 0.2f);
         super.act(delta);
-    }
-
-    public Rectangle getContactBounds() {
-        return contactBounds;
     }
 }

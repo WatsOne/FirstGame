@@ -2,8 +2,11 @@ package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -38,8 +41,11 @@ public class MainScreen implements Screen {
 
     private boolean canJump = true;
 
+    private ShapeRenderer shapeRenderer;
+
     @Override
     public void show() {
+        shapeRenderer = new ShapeRenderer();
         world = new World(new Vector2(0, -10), true);
         float y = 12 / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
 
@@ -72,8 +78,7 @@ public class MainScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
-                boolean onPlatform = currentLevel.onPlatform(player.getContactBounds());
+                boolean onPlatform = currentLevel.onPlatform(player.getContactPolygon());
                 if (canJump || onPlatform) {
                     player.jump(power);
                     canJump = false;
@@ -129,6 +134,15 @@ public class MainScreen implements Screen {
         stage.act(delta);
         stage.draw();
         updateZoom();
+
+//        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+//        shapeRenderer.setColor(Color.RED);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        for (Polygon polygon : currentLevel.getContactPlatforms()) {
+//            shapeRenderer.polygon(polygon.getTransformedVertices());
+//            shapeRenderer.polygon(player.getContactPolygon().getTransformedVertices());
+//        }
+//        shapeRenderer.end();
     }
 
     private void restart() {
@@ -154,7 +168,7 @@ public class MainScreen implements Screen {
     private void createPlayer() {
         player = new ru.alexkulikov.firstfame.objects.Player(world);
         player.setBounds(3, 1.5f, 0.4f, 0.4f);
-        player.createBody();
+        player.createBody(0.4f, 0.4f);
         stage.addActor(player);
     }
 

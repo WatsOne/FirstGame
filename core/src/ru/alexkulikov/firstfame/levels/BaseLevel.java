@@ -1,6 +1,7 @@
 package ru.alexkulikov.firstfame.levels;
 
-import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -16,11 +17,11 @@ public abstract class BaseLevel {
     protected Group levelGroup;
     protected World world;
 
-    protected List<Rectangle> contactPlatforms;
+    protected List<Polygon> contactPlatforms;
 
     public BaseLevel(World world) {
         this.world = world;
-        contactPlatforms = new ArrayList<Rectangle>();
+        contactPlatforms = new ArrayList<Polygon>();
     }
 
     public void buildGroups() {
@@ -29,6 +30,7 @@ public abstract class BaseLevel {
 
     public void clearLevel() {
         levelGroup.remove();
+        contactPlatforms = new ArrayList<Polygon>();
         clearBoxesBodies();
     }
 
@@ -47,9 +49,13 @@ public abstract class BaseLevel {
         }
     }
 
-    public boolean onPlatform(Rectangle player) {
-        for (Rectangle rectangle : contactPlatforms) {
-            if (player.overlaps(rectangle)) {
+    public List<Polygon> getContactPlatforms() {
+        return contactPlatforms;
+    }
+
+    public boolean onPlatform(Polygon playerPolygon) {
+        for (Polygon polygon : contactPlatforms) {
+            if (Intersector.overlapConvexPolygons(polygon, playerPolygon)) {
                 return true;
             }
         }

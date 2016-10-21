@@ -15,13 +15,13 @@ public class Box extends GameObject {
 
     private Sprite sprite;
 
-    public Box(World world, Material material, float x, float y, float h, float w) {
+    public Box(World world, Material material, float x, float y, float w, float h) {
         super(world);
-        setBounds(x, y, 2 * h, 2 * w);
+        setBounds(x, y, w, h);
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(h, w);
+        shape.setAsBox(w / 2, h / 2);
         createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
-        setOrigin(h, w);
+        setOrigin(w / 2, h / 2);
 
         switch (material) {
             case ice:
@@ -32,7 +32,7 @@ public class Box extends GameObject {
                 break;
         }
 
-        sprite.setBounds(x, y, 2 * h, 2 * w);
+        sprite.setBounds(x, y, w, h);
         sprite.setOriginCenter();
     }
 

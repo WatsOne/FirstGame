@@ -139,7 +139,7 @@ public class MainScreen implements Screen {
         //rend.render(world, stage.getCamera().combined);
 
         if (state == GameState.run) {
-            stage.getCamera().position.set(player.getX() + 5, player.getY() + y/VIEWPORT_HEIGHT, 0);
+            stage.getCamera().position.set(player.getX() + 5, player.getY() + y/4, 0);
         }
 
         if (power < 0.4f) {
@@ -186,15 +186,15 @@ public class MainScreen implements Screen {
 
     private void createPlayer() {
         player = new ru.alexkulikov.firstfame.objects.Player(world);
-        player.setBounds(3, 1.5f, 0.4f, 0.4f);
+        player.setBounds(3, 1.0f, 0.4f, 0.4f);
         player.createBody(0.4f, 0.4f);
         stage.addActor(player);
     }
 
 
     private void updateZoom() {
-        float y = Math.max(Math.min(player.getY(), 10), 4);
-        ((OrthographicCamera) stage.getCamera()).zoom = y/4;
+        float zoomY = Math.max(Math.min(player.getY(), 10), 1.0f);
+        ((OrthographicCamera) stage.getCamera()).zoom = zoomY * 0.08f + 0.9f;
     }
 
     @Override

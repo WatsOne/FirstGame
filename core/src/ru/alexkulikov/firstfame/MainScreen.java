@@ -85,11 +85,17 @@ public class MainScreen implements Screen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (state == GameState.gameover) {
+                    restart();
+                    super.touchUp(event, x, y, pointer, button);
+                    return;
+                }
+
                 boolean onPlatform = currentLevel.onPlatform(player.getContactPolygon());
-//                if (canJump || onPlatform) {
+                if (canJump || onPlatform) {
                     player.jump(power);
-//                    canJump = false;
-//                }
+                    canJump = false;
+                }
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -100,9 +106,14 @@ public class MainScreen implements Screen {
                 BoxData boxDataA = (ru.alexkulikov.firstfame.objects.BoxData) contact.getFixtureA().getBody().getUserData();
                 BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
 
-                if (boxDataA != null && boxDataA.getType() == ru.alexkulikov.firstfame.objects.ObjectType.player &&
+                if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
                         boxDataB != null && boxDataB.getType() == ObjectType.box) {
                     canJump = true;
+                }
+
+                if (boxDataA != null && boxDataA.getType() == ObjectType.ground &&
+                        boxDataB != null && boxDataB.getType() == ObjectType.player) {
+                    state = GameState.gameover;
                 }
             }
 

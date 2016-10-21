@@ -1,5 +1,5 @@
 package ru.alexkulikov.firstfame;
 
 public enum GameState {
-    run, restart
+    run, restart, gameover
 }

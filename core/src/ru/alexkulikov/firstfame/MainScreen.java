@@ -46,6 +46,8 @@ public class MainScreen implements Screen {
     private ShapeRenderer shapeRenderer;
     private float y;
 
+    private BackGroundDrawer backGroundDrawer;
+
     @Override
     public void show() {
         shapeRenderer = new ShapeRenderer();
@@ -58,10 +60,7 @@ public class MainScreen implements Screen {
 
         currentLevel = new FirstLevel(world);
 
-        Image background = new Image(TextureLoader.getBackground());
-        background.setBounds(0, 0.5f, 12 * 2, y/1.68f*2);
-        stage.addActor(background);
-
+        backGroundDrawer = new BackGroundDrawer();
         drawLevel();
 
         //stage.setDebugAll(true);
@@ -87,10 +86,10 @@ public class MainScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 boolean onPlatform = currentLevel.onPlatform(player.getContactPolygon());
-                if (canJump || onPlatform) {
+//                if (canJump || onPlatform) {
                     player.jump(power);
-                    canJump = false;
-                }
+//                    canJump = false;
+//                }
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -138,6 +137,8 @@ public class MainScreen implements Screen {
             power += 0.005f;
         }
 
+        backGroundDrawer.updateBackGround(player.getX());
+
         world.step(1/60f, 6, 2);
         stage.act(delta);
         stage.draw();
@@ -165,6 +166,7 @@ public class MainScreen implements Screen {
     }
 
     private void drawLevel() {
+        backGroundDrawer.drawBackGround(stage);
         createPlayer();
 
         currentLevel.buildGroups();

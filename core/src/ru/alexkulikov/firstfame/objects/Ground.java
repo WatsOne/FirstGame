@@ -1,10 +1,7 @@
 package ru.alexkulikov.firstfame.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -17,14 +14,14 @@ public class Ground extends GameObject {
 
     public Ground(World world) {
         super(world);
-        setBounds(50, 0.0f, 200, 1);
+        setBounds(50, -0.5f, 200, 1);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(100, 0.5f);
         createBody(shape, ObjectType.ground, BodyDef.BodyType.StaticBody, 0.4f, 8, 0.2f);
 
         sprite = new Sprite(TextureLoader.getGround());
-        sprite.setBounds(50, 0.0f, 200, 1);
+        sprite.setBounds(50, -0.5f, 200, 1);
     }
 
     @Override

@@ -2,12 +2,9 @@ package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -18,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import ru.alexkulikov.firstfame.levels.BaseLevel;
@@ -26,6 +22,8 @@ import ru.alexkulikov.firstfame.levels.FirstLevel;
 import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
+
+import static ru.alexkulikov.firstfame.objects.Constants.*;
 
 
 public class MainScreen implements Screen {
@@ -52,9 +50,9 @@ public class MainScreen implements Screen {
     public void show() {
         shapeRenderer = new ShapeRenderer();
         world = new World(new Vector2(0, -10), true);
-        y = 12 / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
+        y = VIEWPORT_HEIGHT / ((float)Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
 
-        stage = new Stage(new FitViewport(12, y));
+        stage = new Stage(new FitViewport(VIEWPORT_WIDTH, y));
 
         stage.addActor(new Ground(world));
 
@@ -141,7 +139,7 @@ public class MainScreen implements Screen {
         //rend.render(world, stage.getCamera().combined);
 
         if (state == GameState.run) {
-            stage.getCamera().position.set(player.getX() + 5, player.getY() + y/12, 0);
+            stage.getCamera().position.set(player.getX() + 5, player.getY() + y/VIEWPORT_HEIGHT, 0);
         }
 
         if (power < 0.4f) {
@@ -197,8 +195,6 @@ public class MainScreen implements Screen {
     private void updateZoom() {
         float y = Math.max(Math.min(player.getY(), 10), 4);
         ((OrthographicCamera) stage.getCamera()).zoom = y/4;
-
-//        ((OrthographicCamera) stage.getCamera()).zoom = 3;
     }
 
     @Override

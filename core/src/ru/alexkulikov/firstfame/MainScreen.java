@@ -139,7 +139,7 @@ public class MainScreen implements Screen {
         //rend.render(world, stage.getCamera().combined);
 
         if (state == GameState.run) {
-            stage.getCamera().position.set(player.getX() + 5, player.getY() + y/4, 0);
+            stage.getCamera().position.set(player.getX() + 5, Math.min(player.getY() + y/4, y/1.5f), 0);
         }
 
         if (power < 0.4f) {

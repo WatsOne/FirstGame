@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level start="3">
+    <box shift="0" y="0.2" w="0.4" h="0.4" material="wood"/>
+    <platform shift="0" y="0.6" w="2.0" h="0.4" material="wood"/>
+
+    <box shift="3" y="0.4" w="0.4" h="0.8" material="wood"/>
+    <platform shift="3" y="1.0" w="2.0" h="0.4" material="wood"/>
+</level>

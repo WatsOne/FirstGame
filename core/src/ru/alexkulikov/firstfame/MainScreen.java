@@ -18,9 +18,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
+import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
+import ru.alexkulikov.firstfame.objects.Player;
 
 import static ru.alexkulikov.firstfame.objects.Constants.*;
 
@@ -100,7 +102,7 @@ public class MainScreen implements Screen {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                BoxData boxDataA = (ru.alexkulikov.firstfame.objects.BoxData) contact.getFixtureA().getBody().getUserData();
+                BoxData boxDataA = (BoxData) contact.getFixtureA().getBody().getUserData();
                 BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
 
                 if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
@@ -175,17 +177,21 @@ public class MainScreen implements Screen {
 
     private void drawLevel() {
         backGroundDrawer.drawBackGround(stage);
-        createPlayer();
 
-        levelBuilder.buildGroups("level1.xml");
+        levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
+            @Override
+            public void onBuilt(float playerX, float playerY) {
+                createPlayer(playerX, playerY);
+            }
+        });
+
         stage.addActor(levelBuilder.getLevelGroup());
-
         state = GameState.run;
     }
 
-    private void createPlayer() {
-        player = new ru.alexkulikov.firstfame.objects.Player(world);
-        player.setBounds(3, 1.0f, 0.4f, 0.4f);
+    private void createPlayer(float x, float y) {
+        player = new Player(world);
+        player.setBounds(x, y, 0.4f, 0.4f);
         player.createBody(0.4f, 0.4f);
         stage.addActor(player);
     }

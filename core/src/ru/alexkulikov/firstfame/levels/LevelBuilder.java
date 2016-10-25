@@ -33,15 +33,21 @@ public class LevelBuilder {
 
     }
 
-    public void buildGroups(String levelName) {
+    public void buildGroups(String levelName, LevelBuiltCallback callback) {
         levelGroup = new Group();
         contactPlatforms = new ArrayList<Polygon>();
 
         try {
             XmlReader.Element root = reader.parse(Gdx.files.internal("levels/" + levelName));
-            int boxCount = root.getChildCount();
+            XmlReader.Element player = root.getChildByName("player");
+
+            float playerX = Float.parseFloat(player.getAttribute("x"));
+            float playerY = Float.parseFloat(player.getAttribute("y"));
+
+            XmlReader.Element boxes = root.getChildByName("boxes");
+            int boxCount = boxes.getChildCount();
             for (int i = 0; i < boxCount; i++) {
-                XmlReader.Element box = root.getChild(i);
+                XmlReader.Element box = boxes.getChild(i);
                 String type = box.getName();
 
                 float x = Float.parseFloat(box.getAttribute("x"));
@@ -58,6 +64,9 @@ public class LevelBuilder {
                     levelGroup.addActor(platform);
                 }
             }
+
+            callback.onBuilt(playerX, playerY);
+
         } catch (IOException e) {
             Gdx.app.log("Level builder", "Cannot parse xml", e);
         }

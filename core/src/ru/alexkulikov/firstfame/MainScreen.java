@@ -17,8 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import ru.alexkulikov.firstfame.levels.BaseLevel;
-import ru.alexkulikov.firstfame.levels.FirstLevel;
+import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
@@ -34,7 +33,7 @@ public class MainScreen implements Screen {
     private Box2DDebugRenderer rend;
 
     private ru.alexkulikov.firstfame.objects.Player player;
-    private BaseLevel currentLevel;
+    private LevelBuilder levelBuilder;
 
     private float power;
     private GameState state;
@@ -56,7 +55,7 @@ public class MainScreen implements Screen {
 
         stage.addActor(new Ground(world));
 
-        currentLevel = new FirstLevel(world);
+        levelBuilder = new LevelBuilder(world);
 
         backGroundDrawer = new BackGroundDrawer();
         drawLevel();
@@ -89,7 +88,7 @@ public class MainScreen implements Screen {
                     return;
                 }
 
-                boolean onPlatform = currentLevel.onPlatform(player.getContactPolygon());
+                boolean onPlatform = levelBuilder.onPlatform(player.getContactPolygon());
                 if (canJump || onPlatform) {
                     player.jump(power);
                     canJump = false;
@@ -169,7 +168,7 @@ public class MainScreen implements Screen {
         player.remove();
         player = null;
 
-        currentLevel.clearLevel();
+        levelBuilder.clearLevel();
 
         drawLevel();
     }
@@ -178,8 +177,8 @@ public class MainScreen implements Screen {
         backGroundDrawer.drawBackGround(stage);
         createPlayer();
 
-        currentLevel.buildGroups();
-        stage.addActor(currentLevel.getLevelGroup());
+        levelBuilder.buildGroups("level1.xml");
+        stage.addActor(levelBuilder.getLevelGroup());
 
         state = GameState.run;
     }

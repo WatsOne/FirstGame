@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<level start="3">
-    <box shift="0" y="0.2" w="0.4" h="0.4" material="wood"/>
-    <platform shift="0" y="0.6" w="2.0" h="0.4" material="wood"/>
+<level>
+    <box x="3" y="0.2" w="0.4" h="0.4" material="wood"/>
+    <platform x="3" y="0.6" w="2.0" h="0.4" material="wood"/>
 
-    <box shift="3" y="0.4" w="0.4" h="0.8" material="wood"/>
-    <platform shift="3" y="1.0" w="2.0" h="0.4" material="wood"/>
+    <box x="6" y="0.4" w="0.4" h="0.8" material="wood"/>
+    <platform x="6" y="1.0" w="2.0" h="0.4" material="wood"/>
+
+    <box x="9" y="0.6" w="0.4" h="1.2" material="wood"/>
+    <platform x="9" y="1.4" w="2.0" h="0.4" material="wood"/>
+
+    <box x="14" y="0.6" w="0.4" h="1.2" material="wood"/>
+    <box x="14" y="1.8" w="0.4" h="1.2" material="ice"/>
+    <platform x="14" y="2.6" w="2.0" h="0.4" material="wood"/>
+
+    <box x="19" y="1.0" w="0.4" h="2.0" material="ice"/>
+    <box x="19" y="2.2" w="0.4" h="0.4" material="ice"/>
+    <platform x="19" y="2.6" w="2.0" h="0.4" material="wood"/>
+
+    <box x="25" y="0.6" w="0.4" h="1.2" material="wood"/>
+    <box x="25" y="1.4" w="0.4" h="0.4" material="ice"/>
+    <platform x="25" y="1.8" w="2.0" h="0.4" material="wood"/>
 </level>

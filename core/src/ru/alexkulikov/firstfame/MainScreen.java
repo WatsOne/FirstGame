@@ -2,14 +2,17 @@ package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import box2dLight.RayHandler;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
@@ -47,6 +51,9 @@ public class MainScreen implements Screen {
 
     private BackGroundDrawer backGroundDrawer;
 
+    private RayHandler rayHandler;
+    private box2dLight.PointLight light;
+
     @Override
     public void show() {
         shapeRenderer = new ShapeRenderer();
@@ -65,6 +72,15 @@ public class MainScreen implements Screen {
         //stage.setDebugAll(true);
         //rend = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(stage);
+
+        rayHandler = new RayHandler(world);
+
+        light = new box2dLight.PointLight(rayHandler, 5000, Color.CYAN, 10, 5,5);
+        Filter filter = new Filter();
+        filter.groupIndex = 1;
+        filter.categoryBits = 0x0001;
+        filter.maskBits = 1;
+        light.setContactFilter(filter);
 
         stage.addListener(new InputListener() {
             @Override
@@ -150,6 +166,11 @@ public class MainScreen implements Screen {
         backGroundDrawer.updateBackGround(player.getX());
 
         world.step(1/60f, 6, 2);
+
+        light.setPosition(player.getX(), player.getY());
+        rayHandler.setCombinedMatrix((OrthographicCamera) stage.getCamera());
+        rayHandler.updateAndRender();
+
         stage.act(delta);
         stage.draw();
         updateZoom();

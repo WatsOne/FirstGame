@@ -18,6 +18,10 @@ public class GameObject extends Actor {
     }
 
     protected void createBody(Shape shape, ObjectType oType, BodyDef.BodyType bType, float restitution, float density, float friction) {
+        createBody(shape, oType, bType, restitution, density, friction, false);
+    }
+
+    protected void createBody(Shape shape, ObjectType oType, BodyDef.BodyType bType, float restitution, float density, float friction, boolean x) {
         BodyDef bDef = new BodyDef();
         bDef.position.set(getX(), getY());
         bDef.type = bType;
@@ -31,6 +35,12 @@ public class GameObject extends Actor {
         fDef.restitution = restitution;
         fDef.density = density;
         fDef.friction = friction;
+
+        if (x) {
+            fDef.filter.groupIndex = 2;
+            fDef.filter.categoryBits = 0x0002;
+            fDef.filter.maskBits = 1;
+        }
 
         body.createFixture(fDef);
     }

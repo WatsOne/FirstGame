@@ -27,7 +27,7 @@ public class Player extends GameObject {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(w / 2, h / 2);
         Material material = Material.wood;
-        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
+        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction(), true);
         setOrigin(w / 2, h / 2);
 
         contactPolygon = new Polygon(new float[]{0, 0, w, 0, w, h, 0 , h});

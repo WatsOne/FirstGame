@@ -46,6 +46,7 @@ public class MainScreen implements Screen {
     private float y;
 
     private BackGroundDrawer backGroundDrawer;
+    private TailDrawer tailDrawer;
 
     @Override
     public void show() {
@@ -61,6 +62,7 @@ public class MainScreen implements Screen {
 
         backGroundDrawer = new BackGroundDrawer();
         drawLevel();
+        tailDrawer = new TailDrawer(player.getHeight(), player.getWidth());
 
         //stage.setDebugAll(true);
         //rend = new Box2DDebugRenderer();
@@ -151,8 +153,15 @@ public class MainScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         stage.act(delta);
-        stage.draw();
+
         updateZoom();
+
+        stage.draw();
+        tailDrawer.update(new Vector2(player.getX(), player.getY()));
+//        Gdx.gl.glEnable(GL20.GL_BLEND);
+//        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        tailDrawer.draw(stage.getCamera());
+
 
 //        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
 //        shapeRenderer.setColor(Color.RED);
@@ -176,7 +185,7 @@ public class MainScreen implements Screen {
     }
 
     private void drawLevel() {
-        backGroundDrawer.drawBackGround(stage);
+//        backGroundDrawer.drawBackGround(stage);
 
         levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
             @Override

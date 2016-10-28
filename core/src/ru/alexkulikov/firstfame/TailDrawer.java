@@ -15,11 +15,11 @@ public class TailDrawer {
     private Color color;
 
     public TailDrawer(float playerHeight, float playerWidth) {
-        points = new FixedList<Vector2>(50, Vector2.class);
+        points = new FixedList<Vector2>(70, Vector2.class);
         prevPoint = new Vector2(0,0);
 
         gl20 = new ImmediateModeRenderer20(false, true, 0);
-        color = Color.WHITE;
+        color = Color.RED;
 
         this.playerHeight = playerHeight;
         this.playerWidth = playerWidth;
@@ -33,11 +33,16 @@ public class TailDrawer {
         prevPoint = playerPos;
     }
 
+    public void clear() {
+        points.clear();
+    }
+
     public void draw(Camera cam) {
         gl20.begin(cam.combined, GL20.GL_TRIANGLE_STRIP);
         gl20.vertex(prevPoint.x + playerWidth / 2, prevPoint.y + playerHeight / 2, 0f);
-        for (Vector2 point : points) {
-            gl20.color(color.r, color.g, color.b, color.a);
+        for (int i = 0; i < points.size; i++) {
+            Vector2 point = points.get(i);
+            gl20.color(color.r, color.g, color.b, (float) (points.size - i)/points.size);
             gl20.vertex(point.x, point.y, 0f);
         }
         gl20.end();

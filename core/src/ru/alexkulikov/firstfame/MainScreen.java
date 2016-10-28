@@ -156,11 +156,14 @@ public class MainScreen implements Screen {
 
         updateZoom();
 
-        stage.draw();
+        stage.getCamera().update();
+
         tailDrawer.update(new Vector2(player.getX(), player.getY()));
-//        Gdx.gl.glEnable(GL20.GL_BLEND);
-//        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         tailDrawer.draw(stage.getCamera());
+
+        stage.draw();
 
 
 //        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
@@ -182,6 +185,7 @@ public class MainScreen implements Screen {
         levelBuilder.clearLevel();
 
         drawLevel();
+        tailDrawer.clear();
     }
 
     private void drawLevel() {

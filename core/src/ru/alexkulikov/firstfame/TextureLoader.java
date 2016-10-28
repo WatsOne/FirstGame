@@ -9,6 +9,7 @@ public class TextureLoader {
     private static Texture background;
     private static Texture ground;
     private static Texture player;
+    private static Texture gradient;
 
     public static void load() {
         ice = new Texture(Gdx.files.internal("ice.png"));
@@ -16,6 +17,7 @@ public class TextureLoader {
         background = new Texture(Gdx.files.internal("background.jpg"));
         ground = new Texture(Gdx.files.internal("ground.png"));
         player = new Texture(Gdx.files.internal("player.png"));
+        gradient = new Texture(Gdx.files.internal("gradient.png"));
     }
 
     public static Texture getIce() {
@@ -36,5 +38,9 @@ public class TextureLoader {
 
     public static Texture getGround() {
         return ground;
+    }
+
+    public static Texture getGradient() {
+        return gradient;
     }
 }

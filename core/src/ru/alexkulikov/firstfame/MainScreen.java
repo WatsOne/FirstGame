@@ -1,9 +1,13 @@
 package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -23,6 +27,9 @@ import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.objects.Player;
+import ru.alexkulikov.firstfame.tail.SwipeHandler;
+import ru.alexkulikov.firstfame.tail.TailPointsProcessor;
+import ru.alexkulikov.firstfame.tail.mesh.SwipeTriStrip;
 
 import static ru.alexkulikov.firstfame.objects.Constants.*;
 
@@ -47,6 +54,12 @@ public class MainScreen implements Screen {
 
     private BackGroundDrawer backGroundDrawer;
 
+    SwipeHandler swipe;
+    Texture tex;
+    SwipeTriStrip tris;
+    OrthographicCamera cam;
+    private TailPointsProcessor tailPointsProcessor;
+
     @Override
     public void show() {
         shapeRenderer = new ShapeRenderer();
@@ -60,10 +73,26 @@ public class MainScreen implements Screen {
         levelBuilder = new LevelBuilder(world);
 
         backGroundDrawer = new BackGroundDrawer();
+        tailPointsProcessor = new TailPointsProcessor(10);
         drawLevel();
 
         //stage.setDebugAll(true);
         //rend = new Box2DDebugRenderer();
+
+
+        tris = new SwipeTriStrip();
+        swipe = new SwipeHandler(10);
+        swipe.minDistance = 10;
+        swipe.initialDistance = 10;
+
+        tex = new Texture("gradient.png");
+        tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+//        InputMultiplexer m = new InputMultiplexer();
+//        m.addProcessor(stage);
+//        m.addProcessor(swipe);
         Gdx.input.setInputProcessor(stage);
 
         stage.addListener(new InputListener() {
@@ -71,6 +100,10 @@ public class MainScreen implements Screen {
             public boolean keyTyped(InputEvent event, char character) {
                 if (character == 'c') {
                     restart();
+//                    Gdx.app.log("stage", stage.getCamera().combined.toString());
+//                    Gdx.app.log("cam", cam.combined.toString());
+                    ((OrthographicCamera)stage.getCamera()).zoom = 2;
+
                 }
 
                 return true;
@@ -96,6 +129,11 @@ public class MainScreen implements Screen {
                     canJump = false;
                 }
                 super.touchUp(event, x, y, pointer, button);
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                Gdx.app.log("XXX", x + " " + y);
             }
         });
 
@@ -152,8 +190,20 @@ public class MainScreen implements Screen {
         world.step(1/60f, 6, 2);
         stage.act(delta);
         stage.draw();
-        updateZoom();
+//        updateZoom();
 
+
+        cam.update();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        tex.bind();
+        tris.thickness = 10f;
+//        tris.update(swipe.path());
+        tailPointsProcessor.update(player.getX(), player.getY());
+        tris.update(tailPointsProcessor.path());
+
+        tris.color = Color.WHITE;
+        tris.draw(stage.getCamera());
 //        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
 //        shapeRenderer.setColor(Color.RED);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -176,7 +226,7 @@ public class MainScreen implements Screen {
     }
 
     private void drawLevel() {
-        backGroundDrawer.drawBackGround(stage);
+//        backGroundDrawer.drawBackGround(stage);
 
         levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
             @Override
@@ -192,6 +242,7 @@ public class MainScreen implements Screen {
     private void createPlayer(float x, float y) {
         player = new Player(world);
         player.setBounds(x, y, 0.4f, 0.4f);
+        tailPointsProcessor.initialize(x, y);
         player.createBody(0.4f, 0.4f);
         stage.addActor(player);
     }

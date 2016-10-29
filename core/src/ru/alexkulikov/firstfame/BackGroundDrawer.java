@@ -18,9 +18,9 @@ public class BackGroundDrawer {
     }
 
     public void drawBackGround(Stage stage) {
-        leftTexture.setBounds(0, 0, VIEWPORT_WIDTH, (float) VIEWPORT_HEIGHT/0.75f);
-        centralTexture.setBounds(VIEWPORT_WIDTH, 0, VIEWPORT_WIDTH, (float) VIEWPORT_HEIGHT/0.75f);
-        rightTexture.setBounds(2 * VIEWPORT_WIDTH, 0, VIEWPORT_WIDTH, (float) VIEWPORT_HEIGHT/0.75f);
+        leftTexture.setBounds(0, 0, VIEWPORT_WIDTH, (float) VIEWPORT_WIDTH/0.75f);
+        centralTexture.setBounds(VIEWPORT_WIDTH, 0, VIEWPORT_WIDTH, (float) VIEWPORT_WIDTH/0.75f);
+        rightTexture.setBounds(2 * VIEWPORT_WIDTH, 0, VIEWPORT_WIDTH, (float) VIEWPORT_WIDTH/0.75f);
         stage.addActor(leftTexture);
         stage.addActor(centralTexture);
         stage.addActor(rightTexture);

@@ -22,5 +22,29 @@
         <box h="1.2" material="wood" w="0.4" x="25" y="0.6" />
         <box h="0.4" material="ice" w="0.4" x="25" y="1.4" />
         <platform h="0.4" material="wood" w="2.0" x="25" y="1.8" />
+
+        <box h="1.2" material="wood" w="0.4" x="30" y="0.6" />
+        <box h="1.2" material="ice" w="0.4" x="30" y="1.8" />
+        <platform h="0.4" material="wood" w="2.0" x="30" y="2.6" />
+
+        <box h="2.0" material="ice" w="0.4" x="35" y="1.0" />
+        <box h="0.4" material="ice" w="0.4" x="35" y="2.2" />
+        <platform h="0.4" material="wood" w="2.0" x="35" y="2.6" />
+
+        <box h="1.2" material="wood" w="0.4" x="40" y="0.6" />
+        <box h="0.4" material="ice" w="0.4" x="40" y="1.4" />
+        <platform h="0.4" material="wood" w="2.0" x="40" y="1.8" />
+
+        <box h="1.2" material="wood" w="0.4" x="45" y="0.6" />
+        <box h="1.2" material="ice" w="0.4" x="45" y="1.8" />
+        <platform h="0.4" material="wood" w="2.0" x="45" y="2.6" />
+
+        <box h="2.0" material="ice" w="0.4" x="50" y="1.0" />
+        <box h="0.4" material="ice" w="0.4" x="50" y="2.2" />
+        <platform h="0.4" material="wood" w="2.0" x="50" y="2.6" />
+
+        <box h="1.2" material="wood" w="0.4" x="55" y="0.6" />
+        <box h="0.4" material="ice" w="0.4" x="55" y="1.4" />
+        <platform h="0.4" material="wood" w="2.0" x="55" y="1.8" />
     </boxes>
 </level>

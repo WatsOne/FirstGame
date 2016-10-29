@@ -7,4 +7,5 @@ public class Constants {
     public static final float VIEWPORT_HEIGHT = VIEWPORT_WIDTH / ((float) Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
 
     public static final float RATIO_STANDARD = (float) 800/600;
+    public static final float RATIO_STANDARD_VERTICAL = (float) 600/800;
 }

@@ -47,4 +47,8 @@ public class TailDrawer {
         }
         gl20.end();
     }
+
+    public void dispose() {
+        gl20.dispose();
+    }
 }

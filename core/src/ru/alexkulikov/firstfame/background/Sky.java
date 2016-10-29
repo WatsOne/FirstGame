@@ -1,4 +1,4 @@
-package ru.alexkulikov.firstfame.objects;
+package ru.alexkulikov.firstfame.background;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;

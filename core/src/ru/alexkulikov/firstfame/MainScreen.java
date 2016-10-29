@@ -19,13 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import box2dLight.RayHandler;
+import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.objects.Player;
-import ru.alexkulikov.firstfame.objects.Sky;
+import ru.alexkulikov.firstfame.background.Sky;
 
 import static ru.alexkulikov.firstfame.objects.Constants.*;
 
@@ -47,9 +48,9 @@ public class MainScreen implements Screen {
 
     private ShapeRenderer shapeRenderer;
 
-    private BackGroundDrawer backGroundDrawer;
     private TailDrawer tailDrawer;
     private Sky sky;
+    private MountainDrawer mountainDrawer;
 
     private RayHandler rayHandler;
     private box2dLight.PointLight moonLight;
@@ -63,6 +64,7 @@ public class MainScreen implements Screen {
 
         sky = new Sky();
         stage.addActor(sky);
+        mountainDrawer = new MountainDrawer(stage);
         stage.addActor(new Ground(world));
 
         levelBuilder = new LevelBuilder(world);
@@ -71,7 +73,6 @@ public class MainScreen implements Screen {
         rayHandler.shadowBlendFunc.set(GL20.GL_SRC_COLOR, GL20.GL_DST_COLOR);
         moonLight = new box2dLight.PointLight(rayHandler, 1000, Color.CYAN, 20, 5, 5);
 
-        backGroundDrawer = new BackGroundDrawer();
         drawLevel();
         tailDrawer = new TailDrawer(player.getHeight(), player.getWidth());
 
@@ -160,8 +161,6 @@ public class MainScreen implements Screen {
             power += 0.005f;
         }
 
-        backGroundDrawer.updateBackGround(player.getX());
-
         world.step(1/60f, 6, 2);
         stage.act(delta);
 
@@ -172,6 +171,7 @@ public class MainScreen implements Screen {
         float camX = camera.position.x;
         float camY = camera.position.y;
         sky.update(camX - VIEWPORT_WIDTH / 2 - 6*(zoom - 1), camY - VIEWPORT_HEIGHT/2 - 6/(VIEWPORT_WIDTH/VIEWPORT_HEIGHT)*(zoom - 1), zoom);
+        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2 - 6*(zoom - 1), zoom);
         stage.draw();
 
         moonLight.setPosition(camX + VIEWPORT_WIDTH / 2 + 4*(zoom - 1) - 2, camY + VIEWPORT_HEIGHT/2 + 4/(VIEWPORT_WIDTH/VIEWPORT_HEIGHT)*(zoom - 1) - 2);
@@ -209,7 +209,7 @@ public class MainScreen implements Screen {
     }
 
     private void drawLevel() {
-//        backGroundDrawer.drawBackGround(stage);
+        mountainDrawer.initialize();
 
         levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
             @Override
@@ -257,6 +257,8 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        rayHandler.dispose();
+        stage.dispose();
+        tailDrawer.dispose();
     }
 }

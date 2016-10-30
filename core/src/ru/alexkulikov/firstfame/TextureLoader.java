@@ -11,6 +11,7 @@ public class TextureLoader {
     private static Texture player;
     private static Texture sky;
     private static Texture mountain;
+    private static Texture grass;
 
     public static void load() {
         ice = new Texture(Gdx.files.internal("ice.png"));
@@ -20,6 +21,7 @@ public class TextureLoader {
         player = new Texture(Gdx.files.internal("player.png"));
         sky = new Texture(Gdx.files.internal("sky.png"));
         mountain = new Texture(Gdx.files.internal("mountain.png"));
+        grass = new Texture(Gdx.files.internal("grass.png"));
     }
 
     public static Texture getIce() {
@@ -48,5 +50,9 @@ public class TextureLoader {
 
     public static Texture getMountain() {
         return mountain;
+    }
+
+    public static Texture getGrass() {
+        return grass;
     }
 }

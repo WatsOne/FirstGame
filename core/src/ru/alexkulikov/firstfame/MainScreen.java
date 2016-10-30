@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import box2dLight.RayHandler;
+import ru.alexkulikov.firstfame.background.GrassDrawer;
 import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
@@ -52,6 +53,7 @@ public class MainScreen implements Screen {
     private TailDrawer tailDrawer;
     private Sky sky;
     private MountainDrawer mountainDrawer;
+    private GrassDrawer grassDrawer;
 
     private RayHandler rayHandler;
     private box2dLight.PointLight moonLight;
@@ -68,6 +70,7 @@ public class MainScreen implements Screen {
         backgroundStage.addActor(sky);
 
         mountainDrawer = new MountainDrawer(backgroundStage);
+        grassDrawer = new GrassDrawer(stage);
         stage.addActor(new Ground(world));
 
         levelBuilder = new LevelBuilder(world);
@@ -108,10 +111,10 @@ public class MainScreen implements Screen {
                 }
 
                 boolean onPlatform = levelBuilder.onPlatform(player.getContactPolygon());
-//                if (canJump || onPlatform) {
+                if (canJump || onPlatform) {
                     player.jump(power);
                     canJump = false;
-//                }
+                }
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -173,7 +176,8 @@ public class MainScreen implements Screen {
         float zoom = camera.zoom;
         float camX = camera.position.x;
         float camY = camera.position.y;
-        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2, (0 - camY + VIEWPORT_HEIGHT / 2) + 3.3f*(zoom - 1));
+        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2, (0 - camY + VIEWPORT_HEIGHT / 2) + VIEWPORT_HEIGHT/3*(zoom - 1) + 0.8f);
+        grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
         backgroundStage.draw();
         stage.draw();
 
@@ -213,6 +217,7 @@ public class MainScreen implements Screen {
 
     private void drawLevel() {
         mountainDrawer.initialize();
+        grassDrawer.initialize();
 
         levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
             @Override

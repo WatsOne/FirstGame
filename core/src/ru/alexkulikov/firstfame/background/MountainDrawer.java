@@ -26,12 +26,12 @@ public class MountainDrawer {
         mainOffset = 0;
     }
 
-    public void update(float camX, float zoom) {
-        leftMountain.update(camX/2 + mainOffset, zoom);
-        centralMountain.update(leftMountain.getSpriteOffset(), zoom);
-        rightMountain.update(centralMountain.getSpriteOffset(), zoom);
+    public void update(float camX, float camY) {
+        leftMountain.update((0 - camX/2) + mainOffset, camY);
+        centralMountain.update(leftMountain.getSpriteOffset(), camY);
+        rightMountain.update(centralMountain.getSpriteOffset(), camY);
 
-        if (camX > leftMountain.getSpriteOffset()) {
+        if (leftMountain.getSpriteOffset() < 0) {
             change();
         }
     }

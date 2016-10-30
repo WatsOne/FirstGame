@@ -11,7 +11,6 @@ import static ru.alexkulikov.firstfame.objects.Constants.*;
 public class Mountain extends Actor {
     private Sprite sprite;
     float scalableY;
-    float zoom;
 
     public Mountain() {
         setBounds(0, 0, 0, 0);
@@ -22,16 +21,15 @@ public class Mountain extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(sprite, sprite.getX(), 0, scalableY, VIEWPORT_WIDTH);
+        batch.draw(sprite, sprite.getX(), sprite.getY(), scalableY, VIEWPORT_WIDTH);
     }
 
     public void setSpriteX(float x) {
         sprite.setBounds(x, 0, scalableY, VIEWPORT_WIDTH);
     }
 
-    public void update(float x, float zoom) {
-        this.zoom = zoom;
-        sprite.setBounds(x, 0, scalableY, VIEWPORT_WIDTH);
+    public void update(float x, float y) {
+        sprite.setBounds(x, y, scalableY, VIEWPORT_WIDTH);
     }
 
     public float getSpriteOffset() {

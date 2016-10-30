@@ -35,6 +35,7 @@ public class MainScreen implements Screen {
 
     private World world;
     private Stage stage;
+    private Stage backgroundStage;
 
     private Box2DDebugRenderer rend;
 
@@ -61,10 +62,12 @@ public class MainScreen implements Screen {
         world = new World(new Vector2(0, -10), true);
 
         stage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
+        backgroundStage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
 
         sky = new Sky();
-        stage.addActor(sky);
-        mountainDrawer = new MountainDrawer(stage);
+        backgroundStage.addActor(sky);
+
+        mountainDrawer = new MountainDrawer(backgroundStage);
         stage.addActor(new Ground(world));
 
         levelBuilder = new LevelBuilder(world);
@@ -105,10 +108,10 @@ public class MainScreen implements Screen {
                 }
 
                 boolean onPlatform = levelBuilder.onPlatform(player.getContactPolygon());
-                if (canJump || onPlatform) {
+//                if (canJump || onPlatform) {
                     player.jump(power);
                     canJump = false;
-                }
+//                }
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -170,8 +173,8 @@ public class MainScreen implements Screen {
         float zoom = camera.zoom;
         float camX = camera.position.x;
         float camY = camera.position.y;
-        sky.update(camX - VIEWPORT_WIDTH / 2 - 6*(zoom - 1), camY - VIEWPORT_HEIGHT/2 - 6/(VIEWPORT_WIDTH/VIEWPORT_HEIGHT)*(zoom - 1), zoom);
-        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2 - 6*(zoom - 1), zoom);
+        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2, (0 - camY + VIEWPORT_HEIGHT / 2) + 3.3f*(zoom - 1));
+        backgroundStage.draw();
         stage.draw();
 
         moonLight.setPosition(camX + VIEWPORT_WIDTH / 2 + 4*(zoom - 1) - 2, camY + VIEWPORT_HEIGHT/2 + 4/(VIEWPORT_WIDTH/VIEWPORT_HEIGHT)*(zoom - 1) - 2);

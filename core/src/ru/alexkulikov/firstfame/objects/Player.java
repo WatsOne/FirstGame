@@ -40,13 +40,14 @@ public class Player extends GameObject {
 
     @Override
     public void act(float delta) {
+        setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+        setRotation(MathUtils.radiansToDegrees * body.getAngle());
+
         contactPolygon.setPosition(getX(), getY());
         contactPolygon.setRotation(MathUtils.radiansToDegrees * body.getAngle());
 
         sprite.setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
-
-        super.act(delta);
     }
 
     public void jump(float power) {
@@ -60,5 +61,9 @@ public class Player extends GameObject {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.draw(batch);
+    }
+
+    public Vector2 getLinearVelocity() {
+        return body.getLinearVelocity();
     }
 }

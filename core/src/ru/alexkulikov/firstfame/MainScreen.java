@@ -186,19 +186,48 @@ public class MainScreen implements Screen {
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
 
-        tailDrawer.update(new Vector2(player.getX(), player.getY()));
+        tailDrawer.update(player);
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         tailDrawer.draw(camera);
 
 
-
 //        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
-//        shapeRenderer.setColor(Color.RED);
+//        shapeRenderer.setColor(Color.BLUE);
 //        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 //        for (Polygon polygon : currentLevel.getContactPlatforms()) {
 //            shapeRenderer.polygon(polygon.getTransformedVertices());
 //            shapeRenderer.polygon(player.getContactPolygon().getTransformedVertices());
+//        }
+//        shapeRenderer.end();
+//
+//        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+//        shapeRenderer.setColor(Color.BLUE);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        Vector2 vel = player.getLinearVelocity();
+//        float len = (float) Math.sqrt(vel.x*vel.x+vel.y*vel.y);
+//        float x = player.getX() + 0.2f + vel.x / len;
+//        float y = player.getY() + 0.2f + vel.y / len;
+//        shapeRenderer.line(player.getX() + 0.2f, player.getY() + 0.2f, x, y);
+//        shapeRenderer.setColor(Color.GREEN);
+//        x = player.getX() + 0.2f + vel.y / len;
+//        y = player.getY() + 0.2f - vel.x / len;
+////        x = player.getX() + 0.2f - vel.x / len;
+////        y = player.getY() + 0.2f - vel.y / len;
+//        shapeRenderer.line(player.getX() + 0.2f, player.getY() + 0.2f, x, y);
+//        shapeRenderer.setColor(Color.WHITE);
+//        x = player.getX() + 0.2f - vel.y / len;
+//        y = player.getY() + 0.2f + vel.x / len;
+//        shapeRenderer.line(player.getX() + 0.2f, player.getY() + 0.2f, x, y);
+//        shapeRenderer.end();
+//
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        shapeRenderer.setColor(Color.YELLOW);
+//        Vector2[] v = tailDrawer.update(player);
+//        for (Vector2 vec : v) {
+//            if (vec != null) {
+//                shapeRenderer.circle(vec.x, vec.y, 0.1f, 20);
+//            }
 //        }
 //        shapeRenderer.end();
     }

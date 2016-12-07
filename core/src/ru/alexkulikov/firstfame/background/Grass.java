@@ -21,11 +21,11 @@ public class Grass extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(sprite, sprite.getX(), -4f, scalableY, VIEWPORT_WIDTH);
+        batch.draw(sprite, sprite.getX(), -3.6f, scalableY, VIEWPORT_WIDTH);
     }
 
     public void setSpriteX(float x) {
-        sprite.setBounds(x, -4f, scalableY, VIEWPORT_WIDTH);
+        sprite.setBounds(x, -3.6f, scalableY, VIEWPORT_WIDTH);
     }
 
     public float getSpriteOffset() {

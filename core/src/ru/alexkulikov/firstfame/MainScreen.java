@@ -55,9 +55,6 @@ public class MainScreen implements Screen {
     private MountainDrawer mountainDrawer;
     private GrassDrawer grassDrawer;
 
-    private RayHandler rayHandler;
-    private box2dLight.PointLight moonLight;
-
     @Override
     public void show() {
         shapeRenderer = new ShapeRenderer();
@@ -74,10 +71,6 @@ public class MainScreen implements Screen {
         stage.addActor(new Ground(world));
 
         levelBuilder = new LevelBuilder(world);
-
-        rayHandler = new RayHandler(world);
-        rayHandler.shadowBlendFunc.set(GL20.GL_SRC_COLOR, GL20.GL_DST_COLOR);
-        moonLight = new box2dLight.PointLight(rayHandler, 1000, Color.CYAN, 20, 5, 5);
 
         drawLevel();
         tailDrawer = new TailDrawer(player.getHeight(), player.getWidth());
@@ -180,11 +173,6 @@ public class MainScreen implements Screen {
         grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
         backgroundStage.draw();
         stage.draw();
-
-        moonLight.setPosition(camX + VIEWPORT_WIDTH / 2 + 4*(zoom - 1) - 2, camY + VIEWPORT_HEIGHT/2 + 4/(VIEWPORT_WIDTH/VIEWPORT_HEIGHT)*(zoom - 1) - 2);
-        moonLight.setDistance(20 + 30*(zoom-1));
-        rayHandler.setCombinedMatrix(camera);
-        rayHandler.updateAndRender();
 
         tailDrawer.update(player);
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -294,7 +282,6 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
-        rayHandler.dispose();
         stage.dispose();
         tailDrawer.dispose();
     }

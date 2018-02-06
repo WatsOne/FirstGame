@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.Actor
 
+
 import ru.alexkulikov.firstfame.TextureLoader
 
 import ru.alexkulikov.firstfame.objects.Constants.*

@@ -37,7 +37,7 @@ public class LevelBuilder {
         levelGroup = new Group();
         contactPlatforms = new ArrayList<Polygon>();
 
-        try {
+//        try {
             XmlReader.Element root = reader.parse(Gdx.files.internal("levels/" + levelName));
             XmlReader.Element player = root.getChildByName("player");
 
@@ -67,9 +67,9 @@ public class LevelBuilder {
 
             callback.onBuilt(playerX, playerY);
 
-        } catch (IOException e) {
-            Gdx.app.log("Level builder", "Cannot parse xml", e);
-        }
+//        } catch (IOException e) {
+//            Gdx.app.log("Level builder", "Cannot parse xml", e);
+//        }
     }
 
     public void clearBoxesBodies() {

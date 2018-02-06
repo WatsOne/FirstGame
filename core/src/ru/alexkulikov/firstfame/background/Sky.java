@@ -17,7 +17,7 @@ public class Sky extends Actor {
         setBounds(0, 0, 0, 0);
         sprite = new Sprite(TextureLoader.getSky());
         scalableY = VIEWPORT_WIDTH / RATIO_STANDARD;
-        sprite.setBounds(0, 0, VIEWPORT_WIDTH, scalableY);
+        sprite.setBounds(0, 0, 0, 0);
     }
 
     @Override

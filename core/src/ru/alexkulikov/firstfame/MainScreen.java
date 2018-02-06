@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import box2dLight.RayHandler;
 import ru.alexkulikov.firstfame.background.GrassDrawer;
@@ -166,10 +167,8 @@ public class MainScreen implements Screen {
         updateZoom();
 
         OrthographicCamera camera = (OrthographicCamera) stage.getCamera();
-        float zoom = camera.zoom;
         float camX = camera.position.x;
-        float camY = camera.position.y;
-        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2, (0 - camY + VIEWPORT_HEIGHT / 2) + VIEWPORT_HEIGHT/3*(zoom - 1) + 0.8f);
+        mountainDrawer.update(camX - VIEWPORT_WIDTH / 2);
         grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
         backgroundStage.draw();
         stage.draw();

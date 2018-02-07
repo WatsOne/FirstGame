@@ -12,18 +12,22 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import ru.alexkulikov.firstfame.TailDrawer;
 import ru.alexkulikov.firstfame.TextureLoader;
 
 public class Player extends GameObject {
 
     private Polygon contactPolygon;
     private Sprite sprite;
+    private TailDrawer tailDrawer;
 
     public Player(World world) {
         super(world);
     }
 
     public void createBody(float h, float w) {
+        tailDrawer = new TailDrawer(h, w);
+
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(w / 2, h / 2);
         Material material = Material.wood;
@@ -48,6 +52,8 @@ public class Player extends GameObject {
 
         sprite.setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
         sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
+
+        tailDrawer.update(this);
     }
 
     public void jump(float power) {
@@ -60,10 +66,21 @@ public class Player extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        batch.end();
+        tailDrawer.draw(getStage().getCamera());
+        batch.begin();
         sprite.draw(batch);
     }
 
+
+
     public Vector2 getLinearVelocity() {
         return body.getLinearVelocity();
+    }
+
+    public void clearManual() {
+        tailDrawer.clear();
+        tailDrawer.dispose();
+        remove();
     }
 }

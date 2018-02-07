@@ -1,5 +1,6 @@
 package ru.alexkulikov.firstfame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -45,6 +46,9 @@ public class TailDrawer {
     }
 
     public void draw(Camera cam) {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         gl20.begin(cam.combined, GL20.GL_TRIANGLE_STRIP);
         for (int i = 0; i < points.size; i++) {
             Vector2 point = points.get(i);

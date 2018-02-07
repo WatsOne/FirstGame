@@ -41,7 +41,7 @@ public class MainScreen implements Screen {
 
     private Box2DDebugRenderer rend;
 
-    private ru.alexkulikov.firstfame.objects.Player player;
+    private Player player;
     private LevelBuilder levelBuilder;
 
     private float power;
@@ -51,7 +51,7 @@ public class MainScreen implements Screen {
 
     private ShapeRenderer shapeRenderer;
 
-    private TailDrawer tailDrawer;
+//    private TailDrawer tailDrawer;
     private Sky sky;
     private MountainDrawer mountainDrawer;
     private GrassDrawer grassDrawer;
@@ -74,7 +74,7 @@ public class MainScreen implements Screen {
         levelBuilder = new LevelBuilder(world);
 
         drawLevel();
-        tailDrawer = new TailDrawer(player.getHeight(), player.getWidth());
+        //tailDrawer = new TailDrawer(player.getHeight(), player.getWidth());
 
         //stage.setDebugAll(true);
         //rend = new Box2DDebugRenderer();
@@ -158,7 +158,7 @@ public class MainScreen implements Screen {
         }
 
         if (power < 0.4f) {
-            power += 0.005f;
+            power += 0.005f;stage.draw();
         }
 
         world.step(1/60f, 6, 2);
@@ -171,13 +171,8 @@ public class MainScreen implements Screen {
         mountainDrawer.update(camX - VIEWPORT_WIDTH / 2);
         grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
         backgroundStage.draw();
+
         stage.draw();
-
-        tailDrawer.update(player);
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        tailDrawer.draw(camera);
-
 
 //        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
 //        shapeRenderer.setColor(Color.BLUE);
@@ -222,13 +217,13 @@ public class MainScreen implements Screen {
     private void restart() {
         state = GameState.restart;
 
-        player.remove();
+        player.clearManual();
         player = null;
 
         levelBuilder.clearLevel();
 
         drawLevel();
-        tailDrawer.clear();
+//        tailDrawer.clear();
     }
 
     private void drawLevel() {
@@ -282,6 +277,6 @@ public class MainScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        tailDrawer.dispose();
+//        tailDrawer.dispose();
     }
 }

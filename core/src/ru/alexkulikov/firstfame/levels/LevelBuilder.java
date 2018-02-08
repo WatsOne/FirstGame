@@ -1,11 +1,13 @@
 package ru.alexkulikov.firstfame.levels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
+import ru.alexkulikov.firstfame.PolygonUtils;
 import ru.alexkulikov.firstfame.objects.Box;
 import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Material;
@@ -26,11 +28,12 @@ public class LevelBuilder {
     private XmlReader reader;
     private List<Polygon> contactPlatforms;
     private Group levelGroup;
+    private PolygonUtils polygonUtils;
 
     public LevelBuilder(World world) {
         this.world = world;
         reader= new XmlReader();
-
+        polygonUtils = new PolygonUtils();
     }
 
     public void buildGroups(String levelName, LevelBuiltCallback callback) {
@@ -92,6 +95,16 @@ public class LevelBuilder {
     public boolean onPlatform(Polygon playerPolygon) {
         for (Polygon polygon : contactPlatforms) {
             if (Intersector.overlapConvexPolygons(polygon, playerPolygon)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean onPlatform(Circle playerPolygon) {
+        for (Polygon polygon : contactPlatforms) {
+            if (polygonUtils.overlaps(polygon, playerPolygon)) {
                 return true;
             }
         }

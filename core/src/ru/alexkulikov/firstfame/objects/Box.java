@@ -46,7 +46,7 @@ public class Box extends GameObject {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (sprite != null) {
-            sprite.draw(batch);
+//            sprite.draw(batch);
         }
     }
 }

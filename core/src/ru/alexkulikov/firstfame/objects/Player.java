@@ -66,13 +66,11 @@ public class Player extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.end();
-        tailDrawer.draw(getStage().getCamera());
-        batch.begin();
-        sprite.draw(batch);
+//        batch.end();
+//        tailDrawer.draw(getStage().getCamera());
+//        batch.begin();
+//        sprite.draw(batch);
     }
-
-
 
     public Vector2 getLinearVelocity() {
         return body.getLinearVelocity();

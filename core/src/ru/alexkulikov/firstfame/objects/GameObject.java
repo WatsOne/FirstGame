@@ -17,6 +17,10 @@ public class GameObject extends Actor {
         this.world = world;
     }
 
+    protected void createBody(Shape shape, ObjectType oType, BodyDef.BodyType bType, Material material) {
+        createBody(shape, oType, bType, material.getRestitution(), material.getDensity(), material.getFriction());
+    }
+
     protected void createBody(Shape shape, ObjectType oType, BodyDef.BodyType bType, float restitution, float density, float friction) {
         BodyDef bDef = new BodyDef();
         bDef.position.set(getX(), getY());

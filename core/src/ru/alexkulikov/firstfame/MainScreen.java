@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -49,6 +50,8 @@ public class MainScreen implements Screen {
 
     private ShapeRenderer shapeRenderer;
 
+    private BitmapFont font;
+
 //    private TailDrawer tailDrawer;
     private Sky sky;
     private MountainDrawer mountainDrawer;
@@ -56,6 +59,8 @@ public class MainScreen implements Screen {
 
     @Override
     public void show() {
+        font = new BitmapFont();
+
         shapeRenderer = new ShapeRenderer();
         world = new World(new Vector2(0, -10), true);
 
@@ -156,7 +161,7 @@ public class MainScreen implements Screen {
         }
 
         if (power < 0.4f) {
-            power += 0.005f;stage.draw();
+            power += 0.005f;
         }
 
         world.step(1/60f, 6, 2);
@@ -210,6 +215,11 @@ public class MainScreen implements Screen {
 //            }
 //        }
 //        shapeRenderer.end();
+
+        backgroundStage.getBatch().begin();
+        font.draw(backgroundStage.getBatch(), String.valueOf(power), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 20);
+        backgroundStage.getBatch().end();
+
     }
 
     private void restart() {

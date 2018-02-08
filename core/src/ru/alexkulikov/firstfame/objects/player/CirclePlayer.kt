@@ -1,24 +1,30 @@
-package ru.alexkulikov.firstfame.objects
+package ru.alexkulikov.firstfame.objects.player
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Polygon
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.CircleShape
 import com.badlogic.gdx.physics.box2d.World
+import ru.alexkulikov.firstfame.PolygonUtils
+import ru.alexkulikov.firstfame.objects.Material
+import ru.alexkulikov.firstfame.objects.ObjectType
 
-class CirclePlayer(world: World, private val h: Float) : GameObject(world) {
-    public val contactShape = Circle(0f, 0f, h/2)
+class CirclePlayer(world: World, x: Float, y:Float, private val h: Float) : Player(world) {
+    init {
+        setBounds(x, y, h, h)
+        createBody()
+    }
 
-    public fun createBody() {
+    private val contactShape = Circle(0f, 0f, h/2)
+    private val polygonUtils = PolygonUtils()
+
+    private fun createBody() {
         val shape = CircleShape()
         shape.radius = h/2
         createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, Material.wood)
         setOrigin(h/2, h/2)
-        color = Color.BLUE
     }
 
     override fun act(delta: Float) {
@@ -28,8 +34,5 @@ class CirclePlayer(world: World, private val h: Float) : GameObject(world) {
         contactShape.setPosition(x, y)
     }
 
-    fun jump(power: Float) =
-            body.applyLinearImpulse(Vector2(power * 0.8f, power * 2.5f), body.position, true)
-
-    fun getLinearVelocity(): Vector2 = body.linearVelocity
+    override fun overlaps(polygon: Polygon): Boolean = polygonUtils.overlaps(polygon, contactShape)
 }

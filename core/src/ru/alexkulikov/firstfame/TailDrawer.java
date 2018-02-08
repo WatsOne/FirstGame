@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.alexkulikov.firstfame.objects.Player;
+import ru.alexkulikov.firstfame.objects.player.Player;
+import ru.alexkulikov.firstfame.objects.player.QuadPlayer;
 
 public class TailDrawer {
     private FixedList<Vector2> points;

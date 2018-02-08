@@ -2,11 +2,9 @@ package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -18,19 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import box2dLight.RayHandler;
-import ru.alexkulikov.firstfame.background.GrassDrawer;
 import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
-import ru.alexkulikov.firstfame.objects.CirclePlayer;
+import ru.alexkulikov.firstfame.objects.player.CirclePlayer;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
-import ru.alexkulikov.firstfame.objects.Player;
 import ru.alexkulikov.firstfame.background.Sky;
+import ru.alexkulikov.firstfame.objects.player.Player;
+import ru.alexkulikov.firstfame.objects.player.QuadPlayer;
 
 import static ru.alexkulikov.firstfame.objects.Constants.*;
 
@@ -43,8 +39,7 @@ public class MainScreen implements Screen {
 
     private Box2DDebugRenderer rend;
 
-//    private Player player;
-    private CirclePlayer cPlayer;
+    private Player player;
     private LevelBuilder levelBuilder;
 
     private float power;
@@ -107,11 +102,9 @@ public class MainScreen implements Screen {
                     return;
                 }
 
-//                boolean onPlatform = levelBuilder.onPlatform(player.getContactPolygon());
-                boolean onPlatform = levelBuilder.onPlatform(cPlayer.getContactShape());
+                boolean onPlatform = levelBuilder.onPlatform(player);
                 if (canJump || onPlatform) {
-//                    player.jump(power);
-                    cPlayer.jump(power);
+                    player.jump(power);
                     canJump = false;
                 }
                 super.touchUp(event, x, y, pointer, button);
@@ -159,8 +152,7 @@ public class MainScreen implements Screen {
         rend.render(world, stage.getCamera().combined);
 
         if (state == GameState.run) {
-//            stage.getCamera().position.set(player.getX() + 5, Math.min(player.getY() + VIEWPORT_HEIGHT/4, VIEWPORT_HEIGHT/1.5f), 0);
-            stage.getCamera().position.set(cPlayer.getX() + 5, Math.min(cPlayer.getY() + VIEWPORT_HEIGHT/4, VIEWPORT_HEIGHT/1.5f), 0);
+            stage.getCamera().position.set(player.getX() + 5, Math.min(player.getY() + VIEWPORT_HEIGHT/4, VIEWPORT_HEIGHT/1.5f), 0);
         }
 
         if (power < 0.4f) {
@@ -223,11 +215,8 @@ public class MainScreen implements Screen {
     private void restart() {
         state = GameState.restart;
 
-//        player.clearManual();
-//        player = null;
-
-        cPlayer.remove();
-        cPlayer = null;
+        player.clearManual();
+        player = null;
 
         levelBuilder.clearLevel();
 
@@ -251,21 +240,14 @@ public class MainScreen implements Screen {
     }
 
     private void createPlayer(float x, float y) {
-//        player = new Player(world);
-//        player.setBounds(x, y, 0.4f, 0.4f);
-//        player.createBody(0.4f, 0.4f);
-//        stage.addActor(player);
-
-        cPlayer = new CirclePlayer(world, 0.4f);
-        cPlayer.setBounds(x, y, 0.4f, 0.4f);
-        cPlayer.createBody();
-        stage.addActor(cPlayer);
+//        player = new CirclePlayer(world, x, y, 0.4f);
+        player = new QuadPlayer(world, x, y, 0.4f, 0.4f);
+        stage.addActor(player);
     }
 
 
     private void updateZoom() {
-//        float zoomY = Math.max(Math.min(player.getY(), 10), 1.0f);
-        float zoomY = Math.max(Math.min(cPlayer.getY(), 10), 1.0f);
+        float zoomY = Math.max(Math.min(player.getY(), 10), 1.0f);
         ((OrthographicCamera) stage.getCamera()).zoom = zoomY * 0.08f + 0.9f;
     }
 

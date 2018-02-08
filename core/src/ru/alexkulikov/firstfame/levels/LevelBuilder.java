@@ -13,6 +13,7 @@ import ru.alexkulikov.firstfame.objects.BoxData;
 import ru.alexkulikov.firstfame.objects.Material;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.objects.Platform;
+import ru.alexkulikov.firstfame.objects.player.Player;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
@@ -92,19 +93,9 @@ public class LevelBuilder {
         clearBoxesBodies();
     }
 
-    public boolean onPlatform(Polygon playerPolygon) {
+    public boolean onPlatform(Player player) {
         for (Polygon polygon : contactPlatforms) {
-            if (Intersector.overlapConvexPolygons(polygon, playerPolygon)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean onPlatform(Circle playerPolygon) {
-        for (Polygon polygon : contactPlatforms) {
-            if (polygonUtils.overlaps(polygon, playerPolygon)) {
+            if (player.overlaps(polygon)) {
                 return true;
             }
         }

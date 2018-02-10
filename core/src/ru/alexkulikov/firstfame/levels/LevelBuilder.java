@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import ru.alexkulikov.firstfame.PolygonUtils;
@@ -62,6 +63,8 @@ public class LevelBuilder {
 
                 if (type.equals("box")) {
                     levelGroup.addActor(new Box(world, material, x, y, w, h));
+                } else if (type.equals("ground")) {
+                    levelGroup.addActor(new Box(world, material, x, y, w, h, BodyDef.BodyType.StaticBody));
                 } else {
                     Platform platform = new Platform(world, material, x, y, w, h);
                     contactPlatforms.add(platform.getContactPolygon());
@@ -101,6 +104,10 @@ public class LevelBuilder {
         }
 
         return false;
+    }
+
+    public List<Polygon> getContactPlatforms() {
+        return contactPlatforms;
     }
 
     public Group getLevelGroup() {

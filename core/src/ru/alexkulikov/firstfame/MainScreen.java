@@ -2,10 +2,12 @@ package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import ru.alexkulikov.firstfame.background.GrassDrawer;
 import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
@@ -52,10 +55,9 @@ public class MainScreen implements Screen {
 
     private BitmapFont font;
 
-//    private TailDrawer tailDrawer;
     private Sky sky;
     private MountainDrawer mountainDrawer;
-//    private GrassDrawer grassDrawer;
+    private GrassDrawer grassDrawer;
 
     @Override
     public void show() {
@@ -71,15 +73,14 @@ public class MainScreen implements Screen {
         backgroundStage.addActor(sky);
 
         mountainDrawer = new MountainDrawer(backgroundStage);
-//        grassDrawer = new GrassDrawer(stage);
+        grassDrawer = new GrassDrawer(stage);
         stage.addActor(new Ground(world));
 
         levelBuilder = new LevelBuilder(world);
 
         drawLevel();
-        //tailDrawer = new TailDrawer(player.getHeight(), player.getWidth());
 
-        stage.setDebugAll(true);
+//        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
         Gdx.input.setInputProcessor(stage);
 
@@ -108,7 +109,7 @@ public class MainScreen implements Screen {
                 }
 
                 boolean onPlatform = levelBuilder.onPlatform(player);
-                if (canJump || onPlatform) {
+                if (/*canJump ||*/ onPlatform) {
                     player.jump(power);
                     canJump = false;
                 }
@@ -124,7 +125,7 @@ public class MainScreen implements Screen {
 
                 if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
                         boxDataB != null && boxDataB.getType() == ObjectType.box) {
-                    canJump = true;
+//                    canJump = true;
                 }
 
                 if (boxDataA != null && boxDataA.getType() == ObjectType.ground &&
@@ -154,7 +155,7 @@ public class MainScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
-        rend.render(world, stage.getCamera().combined);
+
 
         if (state == GameState.run) {
             stage.getCamera().position.set(player.getX() + 5, Math.min(player.getY() + VIEWPORT_HEIGHT/4, VIEWPORT_HEIGHT/1.5f), 0);
@@ -172,19 +173,19 @@ public class MainScreen implements Screen {
         OrthographicCamera camera = (OrthographicCamera) stage.getCamera();
         float camX = camera.position.x;
         mountainDrawer.update(camX - VIEWPORT_WIDTH / 2);
-//        grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
-//        backgroundStage.draw();
+        grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
+        backgroundStage.draw();
 
         stage.draw();
 
-//        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
-//        shapeRenderer.setColor(Color.BLUE);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//        for (Polygon polygon : currentLevel.getContactPlatforms()) {
-//            shapeRenderer.polygon(polygon.getTransformedVertices());
+        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for (Polygon polygon : levelBuilder.getContactPlatforms()) {
+            shapeRenderer.polygon(polygon.getTransformedVertices());
 //            shapeRenderer.polygon(player.getContactPolygon().getTransformedVertices());
-//        }
-//        shapeRenderer.end();
+        }
+        shapeRenderer.end();
 //
 //        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
 //        shapeRenderer.setColor(Color.BLUE);
@@ -216,9 +217,11 @@ public class MainScreen implements Screen {
 //        }
 //        shapeRenderer.end();
 
-        backgroundStage.getBatch().begin();
-        font.draw(backgroundStage.getBatch(), String.valueOf(power), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 20);
-        backgroundStage.getBatch().end();
+//        backgroundStage.getBatch().begin();
+//        font.draw(backgroundStage.getBatch(), String.valueOf(power), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 20);
+//        backgroundStage.getBatch().end();
+
+        rend.render(world, stage.getCamera().combined);
 
     }
 
@@ -231,12 +234,11 @@ public class MainScreen implements Screen {
         levelBuilder.clearLevel();
 
         drawLevel();
-//        tailDrawer.clear();
     }
 
     private void drawLevel() {
         mountainDrawer.initialize();
-//        grassDrawer.initialize();
+        grassDrawer.initialize();
 
         levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
             @Override
@@ -250,8 +252,8 @@ public class MainScreen implements Screen {
     }
 
     private void createPlayer(float x, float y) {
-//        player = new CirclePlayer(world, x, y, 0.4f);
-        player = new QuadPlayer(world, x, y, 0.4f, 0.4f);
+        player = new CirclePlayer(world, x, y, 0.4f);
+//        player = new QuadPlayer(world, x, y, 0.4f, 0.4f);
         stage.addActor(player);
     }
 
@@ -284,6 +286,6 @@ public class MainScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-//        tailDrawer.dispose();
+        backgroundStage.dispose();
     }
 }

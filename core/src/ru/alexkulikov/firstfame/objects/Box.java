@@ -14,11 +14,15 @@ public class Box extends GameObject {
     private Sprite sprite;
 
     public Box(World world, Material material, float x, float y, float w, float h) {
+        this(world, material, x, y, w, h, BodyDef.BodyType.DynamicBody);
+    }
+
+    public Box(World world, Material material, float x, float y, float w, float h, BodyDef.BodyType type) {
         super(world);
         setBounds(x, y, w, h);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(w / 2, h / 2);
-        createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
+        createBody(shape, ObjectType.box, type, material.getRestitution(), material.getDensity(), material.getFriction());
         setOrigin(w / 2, h / 2);
 
         switch (material) {
@@ -46,7 +50,7 @@ public class Box extends GameObject {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         if (sprite != null) {
-//            sprite.draw(batch);
+            sprite.draw(batch);
         }
     }
 }

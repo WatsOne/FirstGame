@@ -14,14 +14,14 @@ public class Ground extends GameObject {
 
     public Ground(World world) {
         super(world);
-        setBounds(50, -0.5f, 200, 1);
+        setBounds(50, -5.0f, 200, 1);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(100, 0.5f);
         createBody(shape, ObjectType.ground, BodyDef.BodyType.StaticBody, 0.4f, 8, 0.2f);
 
         sprite = new Sprite(TextureLoader.getGround());
-        sprite.setBounds(50, -0.5f, 200, 1);
+        sprite.setBounds(50, -5.0f, 200, 1);
     }
 
     @Override

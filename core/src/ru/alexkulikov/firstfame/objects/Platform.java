@@ -10,8 +10,8 @@ public class Platform extends Box {
 
     public Platform(World world, Material material, float x, float y, float h, float w) {
         super(world, material, x, y, h, w);
-        contactPolygon = new Polygon(new float[]{0 - 0.1f, 0 - 0.1f, h * 2 + 0.1f, 0 - 0.1f, h * 2 + 0.1f, w * 2 + 0.1f, 0 - 0.1f, w * 2 + 0.1f});
-        contactPolygon.setOrigin(h, w);
+        contactPolygon = new Polygon(new float[]{0 - 0.1f, 0 - 0.1f, h + 0.1f, 0 - 0.1f, h + 0.1f, w + 0.1f, 0 - 0.1f, w + 0.1f});
+        contactPolygon.setOrigin(h / 2, w / 2);
     }
 
     @Override

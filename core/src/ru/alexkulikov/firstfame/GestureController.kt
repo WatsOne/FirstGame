@@ -1,6 +1,5 @@
 package ru.alexkulikov.firstfame
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 
@@ -13,7 +12,7 @@ class GestureController(private val callback: GestureCallback) : GestureDetector
     override fun pinch(initialPointer1: Vector2?, initialPointer2: Vector2?, pointer1: Vector2?, pointer2: Vector2?): Boolean = false
 
     var mainDeltaX = 0f
-    private val maxPowerLength = Gdx.graphics.width / 4f
+    private val maxPowerLength = 200f
 
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
         callback.tap()
@@ -22,13 +21,15 @@ class GestureController(private val callback: GestureCallback) : GestureDetector
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
         mainDeltaX += deltaX
+        callback.onTap(getPower())
         return true
     }
 
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean {
-        mainDeltaX = Math.max(Math.min(mainDeltaX, maxPowerLength), 0f)
-        callback.jump(0.2f + mainDeltaX / 1000f)
+        callback.jump(getPower())
         mainDeltaX = 0f
         return true
     }
+
+    private fun getPower() = 0.2f + Math.max(Math.min(mainDeltaX, maxPowerLength), 0f) / 1000f
 }

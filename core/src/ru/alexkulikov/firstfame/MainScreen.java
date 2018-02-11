@@ -26,6 +26,7 @@ import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
+import ru.alexkulikov.firstfame.objects.Constants;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.background.Sky;
@@ -58,8 +59,11 @@ public class MainScreen implements Screen {
     private MountainDrawer mountainDrawer;
     private GrassDrawer grassDrawer;
 
+    private Float lineFill;
+
     @Override
     public void show() {
+        lineFill = 0.0f;
         font = new BitmapFont();
 
         shapeRenderer = new ShapeRenderer();
@@ -84,6 +88,11 @@ public class MainScreen implements Screen {
 
 //        Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(new GestureDetector(new GestureController(new GestureCallback() {
+            @Override
+            public void onTap(float power) {
+                lineFill = (power * 10 - 2) * 2;
+            }
+
             @Override
             public void jump(float power) {
                 boolean onPlatform = levelBuilder.onPlatform(player);
@@ -156,50 +165,27 @@ public class MainScreen implements Screen {
 
         stage.draw();
 
-        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (Polygon polygon : levelBuilder.getContactPlatforms()) {
-            shapeRenderer.polygon(polygon.getTransformedVertices());
-            shapeRenderer.polygon(((QuadPlayer) player).getContactShape().getTransformedVertices());
-        }
-        shapeRenderer.end();
-//
-//        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
-//        shapeRenderer.setColor(Color.BLUE);
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//        Vector2 vel = player.getLinearVelocity();
-//        float len = (float) Math.sqrt(vel.x*vel.x+vel.y*vel.y);
-//        float x = player.getX() + 0.2f + vel.x / len;
-//        float y = player.getY() + 0.2f + vel.y / len;
-//        shapeRenderer.line(player.getX() + 0.2f, player.getY() + 0.2f, x, y);
-//        shapeRenderer.setColor(Color.GREEN);
-//        x = player.getX() + 0.2f + vel.y / len;
-//        y = player.getY() + 0.2f - vel.x / len;
-////        x = player.getX() + 0.2f - vel.x / len;
-////        y = player.getY() + 0.2f - vel.y / len;
-//        shapeRenderer.line(player.getX() + 0.2f, player.getY() + 0.2f, x, y);
-//        shapeRenderer.setColor(Color.WHITE);
-//        x = player.getX() + 0.2f - vel.y / len;
-//        y = player.getY() + 0.2f + vel.x / len;
-//        shapeRenderer.line(player.getX() + 0.2f, player.getY() + 0.2f, x, y);
-//        shapeRenderer.end();
-//
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(Color.YELLOW);
-//        Vector2[] v = tailDrawer.update(player);
-//        for (Vector2 vec : v) {
-//            if (vec != null) {
-//                shapeRenderer.circle(vec.x, vec.y, 0.1f, 20);
-//            }
+        shapeRenderer.setProjectionMatrix(backgroundStage.getCamera().combined);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+//        for (Polygon polygon : levelBuilder.getContactPlatforms()) {
+//            shapeRenderer.polygon(polygon.getTransformedVertices());
+//            shapeRenderer.polygon(((QuadPlayer) player).getContactShape().getTransformedVertices());
 //        }
-//        shapeRenderer.end();
+
+        shapeRenderer.rect(0.5f, 0.4f, lineFill, 0.2f);
+        shapeRenderer.end();
+
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(0.5f, 0.4f, 4, 0.2f);
+        shapeRenderer.end();
 
 //        backgroundStage.getBatch().begin();
 //        font.draw(backgroundStage.getBatch(), String.valueOf(power), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 20);
 //        backgroundStage.getBatch().end();
 
-        rend.render(world, stage.getCamera().combined);
+//        rend.render(world, stage.getCamera().combined);
 
     }
 
@@ -265,5 +251,6 @@ public class MainScreen implements Screen {
     public void dispose() {
         stage.dispose();
         backgroundStage.dispose();
+        world.dispose();
     }
 }

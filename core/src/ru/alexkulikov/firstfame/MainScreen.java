@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -25,7 +26,6 @@ import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
-import ru.alexkulikov.firstfame.objects.player.CirclePlayer;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.background.Sky;
@@ -46,7 +46,6 @@ public class MainScreen implements Screen {
     private Player player;
     private LevelBuilder levelBuilder;
 
-    private float power;
     private GameState state;
 
     private boolean canJump = true;
@@ -82,40 +81,25 @@ public class MainScreen implements Screen {
 
 //        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
-        Gdx.input.setInputProcessor(stage);
 
-        stage.addListener(new InputListener() {
+//        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(new GestureDetector(new GestureController(new GestureCallback() {
             @Override
-            public boolean keyTyped(InputEvent event, char character) {
-                if (character == 'c') {
-                    restart();
-                }
-
-                return true;
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                power = 0.2f;
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                if (state == GameState.gameover) {
-                    restart();
-                    super.touchUp(event, x, y, pointer, button);
-                    return;
-                }
-
+            public void jump(float power) {
                 boolean onPlatform = levelBuilder.onPlatform(player);
-                if (/*canJump ||*/ onPlatform) {
+                if (canJump || onPlatform) {
                     player.jump(power);
                     canJump = false;
                 }
-                super.touchUp(event, x, y, pointer, button);
             }
-        });
+
+            @Override
+            public void tap() {
+                if (state == GameState.gameover) {
+                    restart();
+                }
+            }
+        })));
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -125,7 +109,7 @@ public class MainScreen implements Screen {
 
                 if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
                         boxDataB != null && boxDataB.getType() == ObjectType.box) {
-//                    canJump = true;
+                    canJump = true;
                 }
 
                 if (boxDataA != null && boxDataA.getType() == ObjectType.ground &&
@@ -155,14 +139,8 @@ public class MainScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
-
-
         if (state == GameState.run) {
             stage.getCamera().position.set(player.getX() + 5, Math.min(player.getY() + VIEWPORT_HEIGHT/4, VIEWPORT_HEIGHT/1.5f), 0);
-        }
-
-        if (power < 0.4f) {
-            power += 0.005f;
         }
 
         world.step(1/60f, 6, 2);
@@ -183,7 +161,7 @@ public class MainScreen implements Screen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (Polygon polygon : levelBuilder.getContactPlatforms()) {
             shapeRenderer.polygon(polygon.getTransformedVertices());
-//            shapeRenderer.polygon(player.getContactPolygon().getTransformedVertices());
+            shapeRenderer.polygon(((QuadPlayer) player).getContactShape().getTransformedVertices());
         }
         shapeRenderer.end();
 //
@@ -252,8 +230,8 @@ public class MainScreen implements Screen {
     }
 
     private void createPlayer(float x, float y) {
-        player = new CirclePlayer(world, x, y, 0.4f);
-//        player = new QuadPlayer(world, x, y, 0.4f, 0.4f);
+//        player = new CirclePlayer(world, x, y, 0.4f);
+        player = new QuadPlayer(world, x, y, 0.4f, 0.4f);
         stage.addActor(player);
     }
 

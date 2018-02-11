@@ -16,7 +16,7 @@ import ru.alexkulikov.firstfame.objects.ObjectType
 
 class QuadPlayer(world: World, x: Float, y:Float, private val h: Float, private val w: Float) : Player(world) {
 
-    private val contactShape = Polygon(floatArrayOf(0f, 0f, w, 0f, w, h, 0f, h))
+    val contactShape = Polygon(floatArrayOf(0f, 0f, w, 0f, w, h, 0f, h))
     private val sprite =  Sprite(TextureLoader.getPlayer())
     private val tailDrawer = TailDrawer(h, w)
 
@@ -29,7 +29,7 @@ class QuadPlayer(world: World, x: Float, y:Float, private val h: Float, private 
         val shape = PolygonShape()
         shape.setAsBox(w / 2, h / 2)
         val material = Material.wood
-        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, material.restitution, material.density, material.friction)
+        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, 0.0f, material.density, material.friction)
         setOrigin(w / 2, h / 2)
 
         contactShape.setOrigin(w / 2, h / 2)

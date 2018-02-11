@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -16,8 +15,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -26,7 +23,6 @@ import ru.alexkulikov.firstfame.background.MountainDrawer;
 import ru.alexkulikov.firstfame.levels.LevelBuilder;
 import ru.alexkulikov.firstfame.levels.LevelBuiltCallback;
 import ru.alexkulikov.firstfame.objects.BoxData;
-import ru.alexkulikov.firstfame.objects.Constants;
 import ru.alexkulikov.firstfame.objects.Ground;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.background.Sky;
@@ -86,7 +82,6 @@ public class MainScreen implements Screen {
 //        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
 
-//        Gdx.input.setInputProcessor(stage);
         Gdx.input.setInputProcessor(new GestureDetector(new GestureController(new GestureCallback() {
             @Override
             public void onTap(float power) {
@@ -116,10 +111,8 @@ public class MainScreen implements Screen {
                 BoxData boxDataA = (BoxData) contact.getFixtureA().getBody().getUserData();
                 BoxData boxDataB = (BoxData) contact.getFixtureB().getBody().getUserData();
 
-                if (boxDataA != null && boxDataA.getType() == ObjectType.player &&
-                        boxDataB != null && boxDataB.getType() == ObjectType.box) {
-                    canJump = true;
-                }
+                canJump = boxDataA != null && boxDataA.getType() == ObjectType.player &&
+                        boxDataB != null && boxDataB.getType() == ObjectType.box;
 
                 if (boxDataA != null && boxDataA.getType() == ObjectType.ground &&
                         boxDataB != null && boxDataB.getType() == ObjectType.player) {
@@ -147,6 +140,10 @@ public class MainScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
+
+        if (player.getY() < 0.0f) {
+            state = GameState.gameover;
+        }
 
         if (state == GameState.run) {
             stage.getCamera().position.set(player.getX() + 5, Math.min(player.getY() + VIEWPORT_HEIGHT/4, VIEWPORT_HEIGHT/1.5f), 0);

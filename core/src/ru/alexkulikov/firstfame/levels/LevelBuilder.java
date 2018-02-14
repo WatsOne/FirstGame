@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import ru.alexkulikov.firstfame.PolygonUtils;
 import ru.alexkulikov.firstfame.objects.Box;
 import ru.alexkulikov.firstfame.objects.BoxData;
+import ru.alexkulikov.firstfame.objects.CircleBox;
 import ru.alexkulikov.firstfame.objects.Material;
 import ru.alexkulikov.firstfame.objects.ObjectType;
 import ru.alexkulikov.firstfame.objects.Platform;
@@ -65,6 +66,8 @@ public class LevelBuilder {
                     levelGroup.addActor(new Box(world, material, x, y, w, h));
                 } else if (type.equals("ground")) {
                     levelGroup.addActor(new Box(world, material, x, y, w, h, BodyDef.BodyType.StaticBody));
+                } else if (type.equals("circle")) {
+                    levelGroup.addActor(new CircleBox(world, material, x, y, h));
                 } else {
                     Platform platform = new Platform(world, material, x, y, w, h);
                     contactPlatforms.add(platform.getContactPolygon());

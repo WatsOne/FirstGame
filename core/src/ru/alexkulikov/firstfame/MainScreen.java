@@ -1,6 +1,7 @@
 package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -57,6 +58,9 @@ public class MainScreen implements Screen {
 
     private Float lineFill;
 
+    private boolean leftPressed;
+    private boolean rightPressed;
+
     @Override
     public void show() {
         lineFill = 0.0f;
@@ -82,7 +86,7 @@ public class MainScreen implements Screen {
 //        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
 
-        Gdx.input.setInputProcessor(new GestureDetector(new GestureController(new GestureCallback() {
+        Gdx.input.setInputProcessor(new KeyGestureDetector(player, new GestureController(new GestureCallback() {
             @Override
             public void onTap(float power) {
                 lineFill = (power * 10 - 2) * 2;
@@ -137,8 +141,28 @@ public class MainScreen implements Screen {
         });
     }
 
+    private void processMove() {
+        if (rightPressed) {
+            boolean onPlatform = levelBuilder.onPlatform(player);
+            if (onPlatform) {
+                player.moveRight();
+            }
+        }
+
+        if (leftPressed) {
+            boolean onPlatform = levelBuilder.onPlatform(player);
+            if (onPlatform) {
+                player.moveLeft();
+            }
+        }
+    }
+
     @Override
     public void render(float delta) {
+        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        processMove();
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
 
         if (player.getY() < 0.0f) {
@@ -201,7 +225,7 @@ public class MainScreen implements Screen {
         mountainDrawer.initialize();
         grassDrawer.initialize();
 
-        levelBuilder.buildGroups("level1.xml", new LevelBuiltCallback() {
+        levelBuilder.buildGroups("level3.xml", new LevelBuiltCallback() {
             @Override
             public void onBuilt(float playerX, float playerY) {
                 createPlayer(playerX, playerY);

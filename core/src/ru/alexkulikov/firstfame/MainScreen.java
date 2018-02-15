@@ -1,14 +1,14 @@
 package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -16,8 +16,13 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import ru.alexkulikov.firstfame.background.GrassDrawer;
 import ru.alexkulikov.firstfame.background.MountainDrawer;
@@ -38,6 +43,7 @@ public class MainScreen implements Screen {
     private World world;
     private Stage stage;
     private Stage backgroundStage;
+    private Stage uiStage;
 
     private Box2DDebugRenderer rend;
 
@@ -56,14 +62,14 @@ public class MainScreen implements Screen {
     private MountainDrawer mountainDrawer;
     private GrassDrawer grassDrawer;
 
-    private Float lineFill;
-
     private boolean leftPressed;
     private boolean rightPressed;
 
+    private ImageButton buttonLeft;
+    private ImageButton buttonRight;
+
     @Override
     public void show() {
-        lineFill = 0.0f;
         font = new BitmapFont();
 
         shapeRenderer = new ShapeRenderer();
@@ -71,6 +77,7 @@ public class MainScreen implements Screen {
 
         stage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
         backgroundStage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
+        uiStage = new Stage(new ScreenViewport());
 
         sky = new Sky();
         backgroundStage.addActor(sky);
@@ -86,36 +93,18 @@ public class MainScreen implements Screen {
 //        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
 
-        Gdx.input.setInputProcessor(new KeyGestureDetector(new KeysCallback() {
+        InputMultiplexer multiplexer = new InputMultiplexer(uiStage, new KeyGestureDetector(new KeysCallback() {
             @Override
             public void onJump() {
-                boolean onPlatform = levelBuilder.onPlatform(player);
-                if (onPlatform) {
-                    player.jumpSmall();
-                }
+                processJump();
             }
         }, new GestureController(new GestureCallback() {
             @Override
-            public void onTap(float power) {
-                lineFill = (power * 10 - 2) * 2;
-            }
-
-            @Override
-            public void jump(float power) {
-                boolean onPlatform = levelBuilder.onPlatform(player);
-                if (canJump || onPlatform) {
-                    player.jump(power);
-                    canJump = false;
-                }
-            }
-
-            @Override
-            public void tap() {
-                if (state == GameState.gameover) {
-                    restart();
-                }
+            public void onTouchDown(float x, float y) {
+                processJump();
             }
         })));
+        Gdx.input.setInputProcessor(multiplexer);
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -147,6 +136,49 @@ public class MainScreen implements Screen {
 
             }
         });
+
+        buttonLeft = new ImageButton(new TextureRegionDrawable(new TextureRegion(TextureLoader.getcWood())));
+        buttonLeft.setBounds(0,0,200,200);
+        buttonLeft.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                leftPressed = false;
+                Gdx.app.log("LEFT", "false");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                leftPressed = true;
+                return true;
+            }
+        });
+        buttonRight = new ImageButton(new TextureRegionDrawable(new TextureRegion(TextureLoader.getcWood())));
+        buttonRight.setBounds(200, 0, 200, 200);
+        buttonRight.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                rightPressed = false;
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                rightPressed = true;
+                return true;
+            }
+        });
+        uiStage.addActor(buttonLeft);
+        uiStage.addActor(buttonRight);
+    }
+
+    private void processJump() {
+        if (state == GameState.gameover) {
+            restart();
+            return;
+        }
+
+        boolean onPlatform = levelBuilder.onPlatform(player);
+        if (canJump || onPlatform) {
+            player.jumpSmall();
+            canJump = false;
+        }
     }
 
     private void processMove() {
@@ -163,8 +195,8 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+//        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+//        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         processMove();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
@@ -179,6 +211,7 @@ public class MainScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         stage.act(delta);
+        uiStage.act(delta);
 
         updateZoom();
 
@@ -186,25 +219,39 @@ public class MainScreen implements Screen {
         float camX = camera.position.x;
         mountainDrawer.update(camX - VIEWPORT_WIDTH / 2);
         grassDrawer.update(camX - VIEWPORT_WIDTH / 2);
+
         backgroundStage.draw();
-
         stage.draw();
+        uiStage.draw();
 
-        shapeRenderer.setProjectionMatrix(backgroundStage.getCamera().combined);
+        shapeRenderer.setProjectionMatrix(uiStage.getCamera().combined);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.circle(100, 100, 100);
+        shapeRenderer.line(75, 100, 125, 100);
+        shapeRenderer.line(75, 100, 100, 110);
+        shapeRenderer.line(75, 100, 100 ,90);
+        shapeRenderer.circle(300, 100, 100);
+        shapeRenderer.line(275, 100, 325, 100);
+        shapeRenderer.line(325, 100, 300, 110);
+        shapeRenderer.line(325, 100, 300 ,90);
+        shapeRenderer.end();
+
+//        shapeRenderer.setProjectionMatrix(backgroundStage.getCamera().combined);
+//        shapeRenderer.setColor(Color.RED);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 //        for (Polygon polygon : levelBuilder.getContactPlatforms()) {
 //            shapeRenderer.polygon(polygon.getTransformedVertices());
 //            shapeRenderer.polygon(((QuadPlayer) player).getContactShape().getTransformedVertices());
 //        }
 
-        shapeRenderer.rect(0.5f, 0.4f, lineFill, 0.2f);
-        shapeRenderer.end();
-
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(0.5f, 0.4f, 4, 0.2f);
-        shapeRenderer.end();
+//        shapeRenderer.rect(0.5f, 0.4f, lineFill, 0.2f);
+//        shapeRenderer.end();
+//
+//        shapeRenderer.setColor(Color.BLACK);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.rect(0.5f, 0.4f, 4, 0.2f);
+//        shapeRenderer.end();
 
 //        backgroundStage.getBatch().begin();
 //        font.draw(backgroundStage.getBatch(), String.valueOf(power), Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 20);
@@ -276,6 +323,7 @@ public class MainScreen implements Screen {
     public void dispose() {
         stage.dispose();
         backgroundStage.dispose();
+        uiStage.dispose();
         world.dispose();
     }
 }

@@ -19,7 +19,12 @@
 
         <ground h="0.4" material="wood" w="0.4" x="14" y="0.6" />
         <box h="0.4" material="ice" w="0.4" x="14" y="1.0" />
-        <box h="0.4" material="ice" w="0.4" x="14" y="1.4" />
-        <platform h="0.4" material="ice" w="2.0" x="14" y="1.8" />
+        <box h="0.4" material="wood" w="0.4" x="14" y="1.4" />
+        <platform h="0.4" material="ice" w="3.0" x="13.8" y="1.8" />
+        <platform h="0.8" material="wood" w="0.4" x="15.1" y="2.4" />
+
+        <ground h="0.4" material="wood" w="0.4" x="18" y="2.4" />
+        <box h="0.4" material="ice" w="0.4" x="18" y="2.8" />
+        <platform h="0.4" material="ice" w="2.0" x="18" y="3.2" />
     </boxes>
 </level>

@@ -4,8 +4,22 @@
     <boxes>
         <ground h="0.4" material="wood" w="0.4" x="3" y="-0.2" />
         <box h="0.4" material="wood" w="0.4" x="3" y="0.2" />
-        <ground h="0.4" material="wood" w="0.4" x="8" y="-0.2" />
-        <box h="0.4" material="wood" w="0.4" x="8" y="0.2" />
-        <platform h="0.4" material="wood" w="10.0" x="7" y="0.6" />
+        <platform h="0.4" material="wood" w="2.0" x="3" y="0.6" />
+
+        <ground h="0.4" material="wood" w="0.4" x="6" y="-0.2" />
+        <box h="0.8" material="wood" w="0.4" x="6" y="0.4" />
+        <platform h="0.4" material="wood" w="2.0" x="6" y="1.0" />
+        <platform h="0.4" material="wood" w="0.4" x="6" y="1.4" />
+
+        <ground h="0.4" material="wood" w="0.4" x="9" y="0.0" />
+        <box h="1.2" material="ice" w="0.4" x="9" y="0.8" />
+        <box h="0.4" material="ice" w="0.4" x="9" y="1.6" />
+        <box h="0.4" material="ice" w="0.4" x="9" y="2.0" />
+        <platform h="0.4" material="ice" w="2.0" x="9" y="2.4" />
+
+        <ground h="0.4" material="wood" w="0.4" x="14" y="0.6" />
+        <box h="0.4" material="ice" w="0.4" x="14" y="1.0" />
+        <box h="0.4" material="ice" w="0.4" x="14" y="1.4" />
+        <platform h="0.4" material="ice" w="2.0" x="14" y="1.8" />
     </boxes>
 </level>

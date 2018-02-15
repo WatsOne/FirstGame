@@ -86,7 +86,15 @@ public class MainScreen implements Screen {
 //        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
 
-        Gdx.input.setInputProcessor(new KeyGestureDetector(player, new GestureController(new GestureCallback() {
+        Gdx.input.setInputProcessor(new KeyGestureDetector(new KeysCallback() {
+            @Override
+            public void onJump() {
+                boolean onPlatform = levelBuilder.onPlatform(player);
+                if (onPlatform) {
+                    player.jumpSmall();
+                }
+            }
+        }, new GestureController(new GestureCallback() {
             @Override
             public void onTap(float power) {
                 lineFill = (power * 10 - 2) * 2;
@@ -144,16 +152,12 @@ public class MainScreen implements Screen {
     private void processMove() {
         if (rightPressed) {
             boolean onPlatform = levelBuilder.onPlatform(player);
-            if (onPlatform) {
-                player.moveRight();
-            }
+            player.move(onPlatform ? 1.0f : 0.3f);
         }
 
         if (leftPressed) {
             boolean onPlatform = levelBuilder.onPlatform(player);
-            if (onPlatform) {
-                player.moveLeft();
-            }
+            player.move(onPlatform ? -1.0f : -0.3f);
         }
     }
 

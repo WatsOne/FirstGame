@@ -16,8 +16,7 @@ open class Player(world: World) : GameObject(world) {
     fun jump(power: Float) =
             body.applyLinearImpulse(Vector2(power * 0.8f, power * 2.5f), body.position, true)
 
-    fun moveLeft() = body.applyForceToCenter(forceVector.set(-1.0f, 0.0f), true)
-    fun moveRight() = body.applyForceToCenter(forceVector.set(1.0f, 0.0f), true)
+    fun move(xPower: Float) = body.applyForceToCenter(forceVector.set(xPower, 0.0f), true)
     fun jumpSmall() = body.applyLinearImpulse(jumpVector.set(0.0f, 0.5f), body.position, true)
 
     val linearVelocity: Vector2

@@ -1,6 +1,7 @@
 package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -92,19 +93,19 @@ public class MainScreen implements Screen {
 
 //        stage.setDebugAll(true);
         rend = new Box2DDebugRenderer();
-
-        InputMultiplexer multiplexer = new InputMultiplexer(uiStage, new KeyGestureDetector(new KeysCallback() {
-            @Override
-            public void onJump() {
-                processJump();
-            }
-        }, new GestureController(new GestureCallback() {
-            @Override
-            public void onTouchDown(float x, float y) {
-                processJump();
-            }
-        })));
-        Gdx.input.setInputProcessor(multiplexer);
+//
+//        InputMultiplexer multiplexer = new InputMultiplexer(uiStage, new KeyGestureDetector(new KeysCallback() {
+//            @Override
+//            public void onJump() {
+//                processJump();
+//            }
+//        }, new GestureController(new GestureCallback() {
+//            @Override
+//            public void onTouchDown(float x, float y) {
+//                processJump();
+//            }
+//        })));
+//        Gdx.input.setInputProcessor(multiplexer);
 
         world.setContactListener(new ContactListener() {
             @Override
@@ -164,8 +165,8 @@ public class MainScreen implements Screen {
                 return true;
             }
         });
-        uiStage.addActor(buttonLeft);
-        uiStage.addActor(buttonRight);
+//        uiStage.addActor(buttonLeft);
+//        uiStage.addActor(buttonRight);
     }
 
     private void processJump() {
@@ -195,8 +196,8 @@ public class MainScreen implements Screen {
 
     @Override
     public void render(float delta) {
-//        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-//        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         processMove();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling ? GL20.GL_COVERAGE_BUFFER_BIT_NV : 0));
@@ -224,18 +225,18 @@ public class MainScreen implements Screen {
         stage.draw();
         uiStage.draw();
 
-        shapeRenderer.setProjectionMatrix(uiStage.getCamera().combined);
-        shapeRenderer.setColor(Color.RED);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.circle(100, 100, 100);
-        shapeRenderer.line(75, 100, 125, 100);
-        shapeRenderer.line(75, 100, 100, 110);
-        shapeRenderer.line(75, 100, 100 ,90);
-        shapeRenderer.circle(300, 100, 100);
-        shapeRenderer.line(275, 100, 325, 100);
-        shapeRenderer.line(325, 100, 300, 110);
-        shapeRenderer.line(325, 100, 300 ,90);
-        shapeRenderer.end();
+//        shapeRenderer.setProjectionMatrix(uiStage.getCamera().combined);
+//        shapeRenderer.setColor(Color.RED);
+//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+//        shapeRenderer.circle(100, 100, 100);
+//        shapeRenderer.line(75, 100, 125, 100);
+//        shapeRenderer.line(75, 100, 100, 110);
+//        shapeRenderer.line(75, 100, 100 ,90);
+//        shapeRenderer.circle(300, 100, 100);
+//        shapeRenderer.line(275, 100, 325, 100);
+//        shapeRenderer.line(325, 100, 300, 110);
+//        shapeRenderer.line(325, 100, 300 ,90);
+//        shapeRenderer.end();
 
 //        shapeRenderer.setProjectionMatrix(backgroundStage.getCamera().combined);
 //        shapeRenderer.setColor(Color.RED);

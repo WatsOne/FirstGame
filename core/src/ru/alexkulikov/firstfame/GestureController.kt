@@ -3,7 +3,7 @@ package ru.alexkulikov.firstfame
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 
-class GestureController(private val callback: GestureCallback) : GestureDetector.GestureListener {
+class GestureController(private val callback: () -> Unit) : GestureDetector.GestureListener {
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean = true
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean = true
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean = false
@@ -14,7 +14,7 @@ class GestureController(private val callback: GestureCallback) : GestureDetector
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean = true
 
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean {
-        callback.onTouchDown(x, y)
+        callback()
         return true
     }
 }

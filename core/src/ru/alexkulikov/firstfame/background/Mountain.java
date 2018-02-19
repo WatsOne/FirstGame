@@ -21,7 +21,7 @@ public class Mountain extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(sprite, sprite.getX(), VIEWPORT_HEIGHT / 5, scalableY, VIEWPORT_WIDTH);
+        batch.draw(sprite, sprite.getX(), 0, scalableY, VIEWPORT_WIDTH);
     }
 
     public void setSpriteX(float x) {

@@ -109,10 +109,6 @@ public class LevelBuilder {
         return false;
     }
 
-    public List<Polygon> getContactPlatforms() {
-        return contactPlatforms;
-    }
-
     public Group getLevelGroup() {
         return levelGroup;
     }

@@ -20,7 +20,7 @@ public class TextureLoader {
         background = new Texture(Gdx.files.internal("background.jpg"));
         ground = new Texture(Gdx.files.internal("ground.png"));
         player = new Texture(Gdx.files.internal("player.png"));
-        sky = new Texture(Gdx.files.internal("sky.png"));
+        sky = new Texture(Gdx.files.internal("sky.jpg"));
         mountain = new Texture(Gdx.files.internal("mountain.png"));
         grass = new Texture(Gdx.files.internal("grass.png"));
         cWood = new Texture(Gdx.files.internal("c_wood.png"));

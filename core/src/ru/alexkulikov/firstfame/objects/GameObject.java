@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class GameObject extends Actor {
@@ -22,11 +23,31 @@ public class GameObject extends Actor {
     }
 
     protected void createBody(Shape shape, ObjectType oType, BodyDef.BodyType bType, float restitution, float density, float friction) {
+        createBody(shape, oType, bType, restitution, density, friction, false);
+    }
+
+    protected void createBody(Shape shape, ObjectType oType, BodyDef.BodyType bType, float restitution, float density, float friction, boolean test) {
         BodyDef bDef = new BodyDef();
         bDef.position.set(getX(), getY());
         bDef.type = bType;
 
         body = world.createBody(bDef);
+        if (test) {
+            BodyDef bDef2 = new BodyDef();
+            bDef2.position.set(getX(), getY());
+            bDef2.type = BodyDef.BodyType.StaticBody;
+
+            Body body2 = world.createBody(bDef2);
+            RevoluteJointDef revoluteJointDef = new RevoluteJointDef();
+//            revoluteJointDef.bodyA = body;
+//            revoluteJointDef.bodyB = body2;
+            revoluteJointDef.initialize(body, body2, body2.getWorldCenter());
+            revoluteJointDef.collideConnected = false;
+//            revoluteJointDef.localAnchorA.set(getX(), getY());
+//            revoluteJointDef.localAnchorB.set(getX(), getY());
+            world.createJoint(revoluteJointDef);
+        }
+//        }
 
         body.setUserData(new BoxData(oType));
 

@@ -47,7 +47,6 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
     private lateinit var buttonLeft: MoveButton
     private lateinit var buttonRight: MoveButton
 
-    private var canJump = false
     private var leftPressed = false
     private var rightPressed = false
 
@@ -70,7 +69,6 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
 
         stageRenderer = ShapeRenderer()
         levelBuilder = LevelBuilder(world)
-        world.setContactListener(WorldContactListener( { canJump = it }, { gameState = GameState.gameover } ))
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
 
         if (!debugMode && !desktopMode) {
@@ -122,10 +120,8 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
             return
         }
 
-        val onPlatform = levelBuilder.onPlatform(player)
-        if (canJump || onPlatform) {
+        if (levelBuilder.onPlatform(player)) {
             player.jumpSmall()
-            canJump = false
         }
     }
 
@@ -155,7 +151,6 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
 
         if (gameState == GameState.run) {
             mainStage.camera.position.set(player.x + 5, player.y, 0f)
-
         }
 
         world.step(1.0f / 60.0f, 6, 2)

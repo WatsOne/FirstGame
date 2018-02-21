@@ -40,14 +40,18 @@ class LevelBuilder(private val world: World) {
             val material = Material.valueOf(box.getAttribute("material"))
 
             when (type) {
-                "box" -> levelGroup.addActor(Box(world, material, x, y, w, h))
-                "ground" -> levelGroup.addActor(Box(world, material, x, y, w, h, BodyDef.BodyType.StaticBody))
-                "circle" -> levelGroup.addActor(CircleBox(world, material, x, y, h))
-                "platform" -> {
+                "box",
+                "platform"-> {
                     val platform = Platform(world, material, x, y, w, h)
                     contactPlatforms.add(platform.contactPolygon)
                     levelGroup.addActor(platform)
                 }
+                "ground" -> {
+                    val platform = Platform(world, material, x, y, w, h, BodyDef.BodyType.StaticBody)
+                    contactPlatforms.add(platform.contactPolygon)
+                    levelGroup.addActor(platform)
+                }
+                "circle" -> levelGroup.addActor(CircleBox(world, material, x, y, h))
             }
         }
 
@@ -70,5 +74,5 @@ class LevelBuilder(private val world: World) {
         clearBoxesBodies()
     }
 
-    fun onPlatform(player: Player): Boolean = contactPlatforms.any { player.overlaps(it) }
+    fun onPlatform(player: Player): Boolean = contactPlatforms.filter { it.x > player.x - 4 && it.x < player.x + 4}.any { player.overlaps(it) }
 }

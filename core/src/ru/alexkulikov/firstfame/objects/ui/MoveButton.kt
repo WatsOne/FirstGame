@@ -7,10 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 
-class MoveButton(texture: Texture, type: ButtonType, uiStage: Stage, onTouchUp: () -> Unit,
-                 onTouchDown: () -> Unit) : ImageButton(TextureRegionDrawable(TextureRegion(texture))) {
+class MoveButton(skin: Skin, type: ButtonType, uiStage: Stage, onTouchUp: () -> Unit,
+                 onTouchDown: () -> Unit) : ImageButton(skin) {
     init {
         when (type) {
             ButtonType.LEFT -> setBounds(0f,0f,200f,200f)

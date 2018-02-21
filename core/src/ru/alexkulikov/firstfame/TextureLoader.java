@@ -2,6 +2,7 @@ package ru.alexkulikov.firstfame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class TextureLoader {
     private static Texture ice;
@@ -13,6 +14,8 @@ public class TextureLoader {
     private static Texture mountain;
     private static Texture grass;
     private static Texture cWood;
+    private static Skin leftSkin;
+    private static Skin rightSkin;
 
     public static void load() {
         ice = new Texture(Gdx.files.internal("ice.png"));
@@ -24,6 +27,8 @@ public class TextureLoader {
         mountain = new Texture(Gdx.files.internal("mountain.png"));
         grass = new Texture(Gdx.files.internal("grass.png"));
         cWood = new Texture(Gdx.files.internal("c_wood.png"));
+        leftSkin = new Skin(Gdx.files.internal("ui/leftButton/leftButton.json"));
+        rightSkin = new Skin(Gdx.files.internal("ui/rightButton/rightButton.json"));
     }
 
     public static Texture getIce() {
@@ -60,5 +65,13 @@ public class TextureLoader {
 
     public static Texture getcWood() {
         return cWood;
+    }
+
+    public static Skin getLeftSkin() {
+        return leftSkin;
+    }
+
+    public static Skin getRightSkin() {
+        return rightSkin;
     }
 }

@@ -74,8 +74,8 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
 
         if (!debugMode && !desktopMode) {
-            buttonLeft = MoveButton(TextureLoader.getcWood(), ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
-            buttonRight = MoveButton(TextureLoader.getcWood(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
+            buttonLeft = MoveButton(TextureLoader.getLeftSkin(), ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
+            buttonRight = MoveButton(TextureLoader.getRightSkin(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
         }
 
         drawLevel()
@@ -177,21 +177,6 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
             backgroundStage.draw()
             mainStage.draw()
             uiStage.draw()
-        }
-
-        if (!debugMode && !desktopMode) {
-            stageRenderer.projectionMatrix = uiStage.camera.combined
-            stageRenderer.color = Color.RED
-            stageRenderer.begin(ShapeRenderer.ShapeType.Line)
-            stageRenderer.circle(100f, 100f, 100f)
-            stageRenderer.line(75f, 100f, 125f, 100f)
-            stageRenderer.line(75f, 100f, 100f, 110f)
-            stageRenderer.line(75f, 100f, 100f, 90f)
-            stageRenderer.circle(300f, 100f, 100f)
-            stageRenderer.line(275f, 100f, 325f, 100f)
-            stageRenderer.line(325f, 100f, 300f, 110f)
-            stageRenderer.line(325f, 100f, 300f, 90f)
-            stageRenderer.end()
         }
 
         frameRate.update()

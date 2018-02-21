@@ -83,14 +83,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-//        compile group: 'io.github.libktx', name: 'ktx-actors', version: $ktxVersion
-        compile "io.github.libktx:ktx-actors:$ktxVersion"
-        compile "io.github.libktx:ktx-app:$ktxVersion"
-        compile "io.github.libktx:ktx-box2d:$ktxVersion"
-        compile "io.github.libktx:ktx-scene2d:$ktxVersion"
-        compile "io.github.libktx:ktx-log:$ktxVersion"
-        compile "io.github.libktx:ktx-collections:$ktxVersion"
-        compile "io.github.libktx:ktx-inject:$ktxVersion"
     }
 }
 

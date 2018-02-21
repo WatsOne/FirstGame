@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ru.alexkulikov.firstfame.background.GrassDrawer
 import ru.alexkulikov.firstfame.background.MountainDrawer
 import ru.alexkulikov.firstfame.background.Sky
-import ru.alexkulikov.firstfame.levels.LevelBuilder2
+import ru.alexkulikov.firstfame.levels.LevelBuilder
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_HEIGHT
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_WIDTH
 import ru.alexkulikov.firstfame.objects.Ground
@@ -26,7 +26,7 @@ import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 import ru.alexkulikov.firstfame.objects.ui.ButtonType
 import ru.alexkulikov.firstfame.objects.ui.MoveButton
 
-class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
+class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
 
     private lateinit var world: World
     private lateinit var mainStage: Stage
@@ -42,7 +42,7 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
 
     private lateinit var player: Player
     private lateinit var gameState: GameState
-    private lateinit var levelBuilder: LevelBuilder2
+    private lateinit var levelBuilder: LevelBuilder
 
     private lateinit var buttonLeft: MoveButton
     private lateinit var buttonRight: MoveButton
@@ -69,7 +69,7 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
         }
 
         stageRenderer = ShapeRenderer()
-        levelBuilder = LevelBuilder2(world)
+        levelBuilder = LevelBuilder(world)
         world.setContactListener(WorldContactListener( { canJump = it }, { gameState = GameState.gameover } ))
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
 

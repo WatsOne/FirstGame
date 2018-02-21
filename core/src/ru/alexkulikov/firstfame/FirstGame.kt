@@ -6,6 +6,6 @@ class FirstGame : Game() {
 
     override fun create() {
         TextureLoader.load()
-        setScreen(MainScreen2(false, false))
+        setScreen(MainScreen(false, false))
     }
 }

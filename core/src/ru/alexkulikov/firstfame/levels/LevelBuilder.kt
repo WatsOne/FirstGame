@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.XmlReader
 import ru.alexkulikov.firstfame.objects.*
 import ru.alexkulikov.firstfame.objects.player.Player
 
-class LevelBuilder2(private val world: World) {
+class LevelBuilder(private val world: World) {
     private val reader = XmlReader()
     private var contactPlatforms = mutableListOf<Polygon>()
     lateinit var levelGroup: Group

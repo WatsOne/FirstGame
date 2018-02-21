@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -22,6 +23,8 @@ import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_WIDTH
 import ru.alexkulikov.firstfame.objects.Ground
 import ru.alexkulikov.firstfame.objects.player.Player
 import ru.alexkulikov.firstfame.objects.player.QuadPlayer
+import ru.alexkulikov.firstfame.objects.ui.ButtonType
+import ru.alexkulikov.firstfame.objects.ui.MoveButton
 
 class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
 
@@ -32,6 +35,7 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
 
     private lateinit var stageRenderer: ShapeRenderer
     private lateinit var worldRenderer: Box2DDebugRenderer
+    private val frameRate = FrameRate()
 
     private lateinit var mountainDrawer: MountainDrawer
     private lateinit var grassDrawer: GrassDrawer
@@ -39,6 +43,9 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
     private lateinit var player: Player
     private lateinit var gameState: GameState
     private lateinit var levelBuilder: LevelBuilder2
+
+    private lateinit var buttonLeft: MoveButton
+    private lateinit var buttonRight: MoveButton
 
     private var canJump = false
     private var leftPressed = false
@@ -61,9 +68,15 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
             grassDrawer = GrassDrawer(mainStage)
         }
 
+        stageRenderer = ShapeRenderer()
         levelBuilder = LevelBuilder2(world)
         world.setContactListener(WorldContactListener( { canJump = it }, { gameState = GameState.gameover } ))
-        Gdx.input.inputProcessor = InputMultiplexer(mainStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
+        Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
+
+        if (!debugMode && !desktopMode) {
+            buttonLeft = MoveButton(TextureLoader.getcWood(), ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
+            buttonRight = MoveButton(TextureLoader.getcWood(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
+        }
 
         drawLevel()
     }
@@ -145,7 +158,7 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
 
         }
 
-        world.step(1 / 60f, 6, 2)
+        world.step(1.0f / 60.0f, 6, 2)
         mainStage.act(delta)
         uiStage.act(delta)
 
@@ -153,8 +166,9 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
         updateZoom()
 
         if (debugMode) {
+            mainStage.draw()
             worldRenderer.render(world, mainStage.camera.combined)
-            mainStage.camera.update()
+//            mainStage.camera.update()
         } else {
             val camX = (mainStage.camera as OrthographicCamera).position.x
             mountainDrawer.update(camX - VIEWPORT_WIDTH / 2)
@@ -164,6 +178,24 @@ class MainScreen2(private val debugMode: Boolean, private val desktopMode: Boole
             mainStage.draw()
             uiStage.draw()
         }
+
+        if (!debugMode && !desktopMode) {
+            stageRenderer.projectionMatrix = uiStage.camera.combined
+            stageRenderer.color = Color.RED
+            stageRenderer.begin(ShapeRenderer.ShapeType.Line)
+            stageRenderer.circle(100f, 100f, 100f)
+            stageRenderer.line(75f, 100f, 125f, 100f)
+            stageRenderer.line(75f, 100f, 100f, 110f)
+            stageRenderer.line(75f, 100f, 100f, 90f)
+            stageRenderer.circle(300f, 100f, 100f)
+            stageRenderer.line(275f, 100f, 325f, 100f)
+            stageRenderer.line(325f, 100f, 300f, 110f)
+            stageRenderer.line(325f, 100f, 300f, 90f)
+            stageRenderer.end()
+        }
+
+        frameRate.update()
+        frameRate.render()
     }
 
     override fun hide() = Unit

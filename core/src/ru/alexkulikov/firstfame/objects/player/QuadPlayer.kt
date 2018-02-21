@@ -38,14 +38,13 @@ class QuadPlayer(world: World, x: Float, y:Float, private val h: Float, private 
     }
 
     override fun act(delta: Float) {
-        setPosition(body.position.x - width / 2, body.position.y - height / 2)
-        rotation = MathUtils.radiansToDegrees * body.angle
+        super.act(delta)
 
         contactShape.setPosition(x, y)
-        contactShape.rotation = MathUtils.radiansToDegrees * body.angle
+        contactShape.rotation = rotation
 
-        sprite.setPosition(body.position.x - width / 2, body.position.y - height / 2)
-        sprite.rotation = MathUtils.radiansToDegrees * body.angle
+        sprite.setPosition(x, y)
+        sprite.rotation = rotation
 
         tailDrawer.update(this)
     }

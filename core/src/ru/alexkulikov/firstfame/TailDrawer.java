@@ -18,10 +18,10 @@ public class TailDrawer {
     private Color color;
 
     public TailDrawer(float playerHeight, float playerWidth) {
-        points = new FixedList<Vector2>(70, Vector2.class);
+        points = new FixedList<>(70, Vector2.class);
 
         gl20 = new ImmediateModeRenderer20(false, true, 0);
-        color = Color.CYAN;
+        color = Color.MAGENTA;
 
         this.playerHeight = playerHeight;
         this.playerWidth = playerWidth;

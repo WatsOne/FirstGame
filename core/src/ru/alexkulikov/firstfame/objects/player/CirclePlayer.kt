@@ -1,6 +1,5 @@
 package ru.alexkulikov.firstfame.objects.player
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Circle
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Polygon
@@ -23,7 +22,7 @@ class CirclePlayer(world: World, x: Float, y:Float, private val h: Float) : Play
     private fun createBody() {
         val shape = CircleShape()
         shape.radius = h/2
-        createBody(shape, ObjectType.player, BodyDef.BodyType.DynamicBody, Material.wood)
+        createBody(shape, ObjectType.PLAYER, BodyDef.BodyType.DynamicBody, Material.wood)
         setOrigin(h/2, h/2)
     }
 

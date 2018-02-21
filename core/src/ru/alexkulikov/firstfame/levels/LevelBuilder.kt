@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
+import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.utils.Array
@@ -40,14 +41,18 @@ class LevelBuilder(private val world: World) {
             val material = Material.valueOf(box.getAttribute("material"))
 
             when (type) {
-                "box",
-                "platform"-> {
+                "box" -> {
                     val platform = Platform(world, material, x, y, w, h)
                     contactPlatforms.add(platform.contactPolygon)
                     levelGroup.addActor(platform)
                 }
                 "ground" -> {
                     val platform = Platform(world, material, x, y, w, h, BodyDef.BodyType.StaticBody)
+                    contactPlatforms.add(platform.contactPolygon)
+                    levelGroup.addActor(platform)
+                }
+                "seesaw" -> {
+                    val platform = Platform(world, ObjectType.SEESAW, material, x, y, w, h)
                     contactPlatforms.add(platform.contactPolygon)
                     levelGroup.addActor(platform)
                 }
@@ -58,21 +63,27 @@ class LevelBuilder(private val world: World) {
         callback(playerX, playerY)
     }
 
-    private fun clearBoxesBodies() {
+    private fun clearWorld() {
         val bodies = Array<Body>()
+        val joints = Array<Joint>()
         world.getBodies(bodies)
-        for (b in bodies) {
-            val data = b.userData as BoxData?
-            if (data != null && (data.type == ObjectType.box || data.type == ObjectType.player)) {
-                world.destroyBody(b)
+        world.getJoints(joints)
+        joints.forEach { world.destroyJoint(it) }
+        bodies.forEach {
+            val data = it.userData as BoxData?
+            if (data == null || data.type != ObjectType.GROUND) {
+                world.destroyBody(it)
             }
         }
     }
 
     fun clearLevel() {
         levelGroup.remove()
-        clearBoxesBodies()
+        clearWorld()
     }
 
-    fun onPlatform(player: Player): Boolean = contactPlatforms.filter { it.x > player.x - 4 && it.x < player.x + 4}.any { player.overlaps(it) }
+    fun onPlatform(player: Player): Boolean =
+            contactPlatforms
+                    .filter { it.x > player.x - 4 && it.x < player.x + 4}
+                    .any { player.overlaps(it) }
 }

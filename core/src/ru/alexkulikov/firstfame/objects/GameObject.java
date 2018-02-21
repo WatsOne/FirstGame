@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class GameObject extends Actor {
@@ -37,11 +38,23 @@ public class GameObject extends Actor {
         fDef.friction = friction;
 
         body.createFixture(fDef);
+
+        if (oType == ObjectType.SEESAW) {
+            BodyDef pin = new BodyDef();
+            pin.position.set(getX(), getY());
+            pin.type = BodyDef.BodyType.StaticBody;
+            Body pinBody = world.createBody(pin);
+
+            RevoluteJointDef joint = new RevoluteJointDef();
+            joint.initialize(body, pinBody, pinBody.getWorldCenter());
+            joint.collideConnected = false;
+            world.createJoint(joint);
+        }
     }
 
     @Override
     public void act(float delta) {
-        setPosition(body.getPosition().x - getWidth()/2, body.getPosition().y - getHeight()/2);
+        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);
         setRotation(MathUtils.radiansToDegrees * body.getAngle());
         super.act(delta);
     }

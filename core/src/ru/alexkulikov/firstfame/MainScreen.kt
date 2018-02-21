@@ -91,7 +91,7 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
             grassDrawer.initialize()
         }
 
-        levelBuilder.build("level3.xml", this::createPlayer)
+        levelBuilder.build("level4.xml", this::createPlayer)
         mainStage.addActor(levelBuilder.levelGroup)
         gameState = GameState.run
     }

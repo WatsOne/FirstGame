@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import ru.alexkulikov.firstfame.TextureLoader;
@@ -19,7 +18,7 @@ public class CircleBox extends GameObject {
         setBounds(x, y, r, r);
         CircleShape shape = new CircleShape();
         shape.setRadius(r / 2);
-        createBody(shape, ObjectType.box, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
+        createBody(shape, ObjectType.BOX, BodyDef.BodyType.DynamicBody, material.getRestitution(), material.getDensity(), material.getFriction());
         setOrigin(r / 2, r / 2);
 
         switch (material) {

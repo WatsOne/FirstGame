@@ -17,6 +17,10 @@ class Platform : Box {
         createContactPolygon(h, w)
     }
 
+    constructor(world: World, oType: ObjectType, material: Material, x: Float, y: Float, h: Float, w: Float) : super(world, oType, material, x, y, h, w) {
+        createContactPolygon(h, w)
+    }
+
     private fun createContactPolygon(h: Float, w: Float) {
         contactPolygon = Polygon(floatArrayOf(0 - 0.1f, 0 - 0.1f, h + 0.1f, 0 - 0.1f, h + 0.1f, w + 0.1f, 0 - 0.1f, w + 0.1f))
         contactPolygon.setOrigin(h / 2, w / 2)

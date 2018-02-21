@@ -15,15 +15,15 @@ class WorldContactListener(private val gameOverCallback: () -> Unit) : ContactLi
         val boxDataA = contact.fixtureA.body.userData as BoxData?
         val boxDataB = contact.fixtureB.body.userData as BoxData?
 
-        val canJump = boxDataA != null && boxDataA.type == ObjectType.player && boxDataB != null && boxDataB.type == ObjectType.box ||
-                      boxDataA != null && boxDataA.type == ObjectType.box && boxDataB != null && boxDataB.type == ObjectType.player
+        val canJump = boxDataA != null && boxDataA.type == ObjectType.PLAYER && boxDataB != null && boxDataB.type == ObjectType.BOX ||
+                      boxDataA != null && boxDataA.type == ObjectType.BOX && boxDataB != null && boxDataB.type == ObjectType.PLAYER
 
         if (canJump) {
             collisions++
         }
 
-        val gameOver = boxDataA != null && boxDataA.type == ObjectType.ground && boxDataB != null && boxDataB.type == ObjectType.player ||
-                       boxDataA != null && boxDataA.type == ObjectType.player && boxDataB != null && boxDataB.type == ObjectType.ground
+        val gameOver = boxDataA != null && boxDataA.type == ObjectType.GROUND && boxDataB != null && boxDataB.type == ObjectType.PLAYER ||
+                       boxDataA != null && boxDataA.type == ObjectType.PLAYER && boxDataB != null && boxDataB.type == ObjectType.GROUND
 
         if (gameOver) gameOverCallback()
     }
@@ -35,8 +35,8 @@ class WorldContactListener(private val gameOverCallback: () -> Unit) : ContactLi
         val boxDataA = contact.fixtureA.body.userData as BoxData?
         val boxDataB = contact.fixtureB.body.userData as BoxData?
 
-        val canJump = boxDataA != null && boxDataA.type == ObjectType.player && boxDataB != null && boxDataB.type == ObjectType.box ||
-                boxDataA != null && boxDataA.type == ObjectType.box && boxDataB != null && boxDataB.type == ObjectType.player
+        val canJump = boxDataA != null && boxDataA.type == ObjectType.PLAYER && boxDataB != null && boxDataB.type == ObjectType.BOX ||
+                boxDataA != null && boxDataA.type == ObjectType.BOX && boxDataB != null && boxDataB.type == ObjectType.PLAYER
 
         if (canJump) {
             collisions--

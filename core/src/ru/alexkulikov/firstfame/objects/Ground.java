@@ -18,7 +18,7 @@ public class Ground extends GameObject {
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(100, 0.5f);
-        createBody(shape, ObjectType.ground, BodyDef.BodyType.StaticBody, 0.4f, 8, 0.2f);
+        createBody(shape, ObjectType.GROUND, BodyDef.BodyType.StaticBody, 0.4f, 8, 0.2f);
 
         sprite = new Sprite(TextureLoader.getGround());
         sprite.setBounds(50, -5.0f, 200, 1);

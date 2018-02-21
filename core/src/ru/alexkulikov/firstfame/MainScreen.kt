@@ -149,12 +149,12 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0)
 
-        if (player.y < 0.0f) {
+        if (player.y < 2.0f) {
             gameState = GameState.gameover
         }
 
         if (gameState == GameState.run) {
-            mainStage.camera.position.set(player.x + 5, Math.min(player.y + VIEWPORT_HEIGHT / 4, VIEWPORT_HEIGHT / 1.5f), 0f)
+            mainStage.camera.position.set(player.x + 5, player.y, 0f)
 
         }
 

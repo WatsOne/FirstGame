@@ -23,8 +23,8 @@ class Grass : Actor() {
         sprite.setBounds(0f, 0f, 0f, 0f)
     }
 
-    override fun draw(batch: Batch?, parentAlpha: Float) =
-            batch!!.draw(sprite, sprite.x, -3.6f, scalableY, VIEWPORT_WIDTH.toFloat())
+    override fun draw(batch: Batch, parentAlpha: Float) =
+            batch.draw(sprite, sprite.x, -scalableY / 2.0f, scalableY, VIEWPORT_WIDTH.toFloat())
 
     fun setSpriteX(x: Float) = sprite.setBounds(x, -3.6f, scalableY, VIEWPORT_WIDTH.toFloat())
 }

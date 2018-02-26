@@ -7,5 +7,27 @@
         <box h="0.4" material="wood" w="2.0" x="3" y="2.6" />
 
         <seesaw h="0.4" material="wood" w="4.0" x="8" y="2.6" />
+        <box h="0.4" material="wood" w="0.4" x="8" y="3.0" />
+
+        <seesaw h="0.4" material="ice" w="4.0" x="13" y="3.0" />
+        <box h="0.4" material="ice" w="0.4" x="11.2" y="3.4" />
+        <box h="0.4" material="ice" w="0.4" x="14.8" y="3.4" />
+
+        <ground h="0.4" material="wood" w="0.4" x="15.5" y="5.0" />
+        <box h="0.4" material="ice" w="0.4" x="15.5" y="5.4" />
+        <box h="0.4" material="wood" w="2.0" x="15.5" y="5.8" />
+
+        <ground h="0.4" material="wood" w="0.4" x="17.5" y="6.0" />
+        <box h="0.4" material="ice" w="0.4" x="17.5" y="6.4" />
+        <box h="0.4" material="ice" w="2.0" x="17.5" y="6.8" />
+
+        <seesaw h="0.4" material="wood" w="4.0" x="24" y="6.0" />
+        <box h="0.4" material="ice" w="0.4" x="22.2" y="6.4" />
+        <box h="0.4" material="ice" w="0.4" x="25.8" y="6.4" />
+        <box h="0.4" material="wood" w="4.0" x="24" y="6.8" />
+
+        <ground h="0.4" material="wood" w="0.4" x="24" y="1.8" />
+        <box h="0.4" material="wood" w="0.4" x="24" y="2.2" />
+        <box h="0.4" material="wood" w="2.0" x="24" y="2.6" />
     </boxes>
 </level>

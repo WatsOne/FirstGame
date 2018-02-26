@@ -1,6 +1,8 @@
 package ru.alexkulikov.firstfame.objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -46,7 +48,10 @@ public class GameObject extends Actor {
             Body pinBody = world.createBody(pin);
 
             RevoluteJointDef joint = new RevoluteJointDef();
-            joint.initialize(body, pinBody, pinBody.getWorldCenter());
+            joint.bodyA = body;
+            joint.bodyB = pinBody;
+            joint.localAnchorA.set(0, 0);
+            joint.localAnchorB.set(0, 0);
             joint.collideConnected = false;
             world.createJoint(joint);
         }

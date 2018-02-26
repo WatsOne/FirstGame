@@ -150,7 +150,7 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
         }
 
         if (gameState == GameState.run) {
-            mainStage.camera.position.set(player.x + 5, player.y, 0f)
+            mainStage.camera.position.set(player.x + 4, player.y, 0f)
         }
 
         world.step(1.0f / 60.0f, 6, 2)
@@ -158,12 +158,12 @@ class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolea
         uiStage.act(delta)
 
         processMove()
-        updateZoom()
+//        updateZoom()
 
         if (debugMode) {
-            mainStage.draw()
+//            mainStage.draw()
             worldRenderer.render(world, mainStage.camera.combined)
-//            mainStage.camera.update()
+            mainStage.camera.update()
         } else {
             val camX = (mainStage.camera as OrthographicCamera).position.x
             mountainDrawer.update(camX - VIEWPORT_WIDTH / 2)

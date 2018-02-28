@@ -1,17 +1,16 @@
 package ru.alexkulikov.firstfame.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class GameObject extends Actor {
+import ru.alexkulikov.firstfame.FadeActor;
+
+public class GameObject extends FadeActor {
 
     protected Body body;
     private World world;

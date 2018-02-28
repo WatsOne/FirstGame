@@ -26,6 +26,7 @@ public class Ground extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
         sprite.draw(batch);
     }
 

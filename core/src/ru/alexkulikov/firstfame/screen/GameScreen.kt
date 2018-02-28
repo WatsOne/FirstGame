@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ru.alexkulikov.firstfame.*
@@ -35,7 +36,7 @@ class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolea
 
     private lateinit var stageRenderer: ShapeRenderer
     private lateinit var worldRenderer: Box2DDebugRenderer
-    private val frameRate = FrameRate()
+    //private val frameRate = FrameRate()
 
     private lateinit var mountainDrawer: MountainDrawer
     private lateinit var grassDrawer: GrassDrawer
@@ -77,6 +78,17 @@ class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolea
         }
 
         drawLevel()
+        fadeIn(0.3f)
+    }
+
+    private fun fadeIn(duration: Float) {
+        backgroundStage.root.color.a = 0f
+        mainStage.root.color.a = 0f
+        uiStage.root.color.a = 0f
+
+        backgroundStage.addAction(Actions.fadeIn(duration))
+        mainStage.addAction(Actions.fadeIn(duration))
+        uiStage.addAction(Actions.fadeIn(duration))
     }
 
     private fun initBackGround() {
@@ -154,6 +166,8 @@ class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolea
         }
 
         world.step(1.0f / 60.0f, 6, 2)
+
+        backgroundStage.act(delta)
         mainStage.act(delta)
         uiStage.act(delta)
 
@@ -174,8 +188,8 @@ class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolea
             uiStage.draw()
         }
 
-        frameRate.update()
-        frameRate.render()
+//        frameRate.update()
+//        frameRate.render()
     }
 
     override fun hide() = Unit

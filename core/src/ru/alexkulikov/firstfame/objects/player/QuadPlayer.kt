@@ -52,6 +52,8 @@ class QuadPlayer(world: World, x: Float, y:Float, private val h: Float, private 
         batch.end()
         tailDrawer.draw(stage.camera)
         batch.begin()
+
+        super.draw(batch, parentAlpha)
         sprite.draw(batch)
     }
 

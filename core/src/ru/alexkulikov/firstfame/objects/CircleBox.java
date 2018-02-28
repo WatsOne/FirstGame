@@ -45,6 +45,8 @@ public class CircleBox extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
         if (sprite != null) {
             sprite.draw(batch);
         }

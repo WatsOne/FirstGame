@@ -4,11 +4,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import ru.alexkulikov.firstfame.FadeActor;
 import ru.alexkulikov.firstfame.TextureLoader;
 
 import static ru.alexkulikov.firstfame.objects.Constants.*;
 
-public class Mountain extends Actor {
+public class Mountain extends FadeActor {
     private Sprite sprite;
     float scalableY;
 
@@ -21,6 +22,7 @@ public class Mountain extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
         batch.draw(sprite, sprite.getX(), 0.0f, scalableY, VIEWPORT_WIDTH);
     }
 

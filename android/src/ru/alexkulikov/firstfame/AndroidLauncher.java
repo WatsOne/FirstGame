@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import ru.alexkulikov.firstfame.FirstGame;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
@@ -12,6 +11,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.numSamples = 2;
-		initialize(new FirstGame(), config);
+		initialize(new App(), config);
 	}
 }

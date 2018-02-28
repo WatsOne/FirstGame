@@ -57,6 +57,8 @@ public class TailDrawer {
             gl20.vertex(point.x, point.y, 0f);
         }
         gl20.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     public void dispose() {

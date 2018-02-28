@@ -1,10 +1,9 @@
-package ru.alexkulikov.firstfame
+package ru.alexkulikov.firstfame.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -14,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import ru.alexkulikov.firstfame.*
 import ru.alexkulikov.firstfame.background.GrassDrawer
 import ru.alexkulikov.firstfame.background.MountainDrawer
 import ru.alexkulikov.firstfame.background.Sky
@@ -26,7 +26,7 @@ import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 import ru.alexkulikov.firstfame.objects.ui.ButtonType
 import ru.alexkulikov.firstfame.objects.ui.MoveButton
 
-class MainScreen(private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
+class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
 
     private lateinit var world: World
     private lateinit var mainStage: Stage

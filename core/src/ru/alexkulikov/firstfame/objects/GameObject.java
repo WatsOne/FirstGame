@@ -40,6 +40,7 @@ public class GameObject extends Actor {
         fDef.friction = friction;
 
         body.createFixture(fDef);
+        shape.dispose();
 
         if (oType == ObjectType.SEESAW) {
             BodyDef pin = new BodyDef();

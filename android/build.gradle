@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "25.0.2"
-    compileSdkVersion 25
+    buildToolsVersion "27.0.3"
+    compileSdkVersion 27
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "ru.alexkulikov.firstfame"
         minSdkVersion 8
-        targetSdkVersion 25
+        targetSdkVersion 27
     }
 }
 
@@ -82,8 +82,8 @@ eclipse {
     }
 
     jdt {
-        sourceCompatibility = 1.7
-        targetCompatibility = 1.7
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 
     classpath {

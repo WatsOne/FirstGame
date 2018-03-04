@@ -15,7 +15,7 @@ class Exit(manager: AssetManager) : FadeActor() {
     private var delta = 0f
 
     init {
-        setBounds(5f, 5f, 0f, 0f)
+        setBounds(5f, 5f, 1f, 1f)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -23,6 +23,6 @@ class Exit(manager: AssetManager) : FadeActor() {
 
         delta += Gdx.graphics.deltaTime
         val keyFrame = animation.getKeyFrame(delta, true)
-        batch.draw(keyFrame, 5f, 5f)
+        batch.draw(keyFrame, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
     }
 }

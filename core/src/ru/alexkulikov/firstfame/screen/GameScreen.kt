@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import ktx.inject.Context
 import ru.alexkulikov.firstfame.*
 import ru.alexkulikov.firstfame.background.GrassDrawer
 import ru.alexkulikov.firstfame.background.MountainDrawer
@@ -21,13 +22,14 @@ import ru.alexkulikov.firstfame.background.Sky
 import ru.alexkulikov.firstfame.levels.LevelBuilder
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_HEIGHT
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_WIDTH
+import ru.alexkulikov.firstfame.objects.Exit
 import ru.alexkulikov.firstfame.objects.Ground
 import ru.alexkulikov.firstfame.objects.player.Player
 import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 import ru.alexkulikov.firstfame.objects.ui.ButtonType
 import ru.alexkulikov.firstfame.objects.ui.MoveButton
 
-class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
+class GameScreen(private val context: Context, private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
 
     private lateinit var world: World
     private lateinit var mainStage: Stage
@@ -58,6 +60,7 @@ class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolea
         backgroundStage = Stage(FitViewport(VIEWPORT_WIDTH.toFloat(), VIEWPORT_HEIGHT))
         uiStage = Stage(ScreenViewport())
 
+
         if (debugMode) {
             stageRenderer = ShapeRenderer()
             worldRenderer = Box2DDebugRenderer()
@@ -77,6 +80,7 @@ class GameScreen(private val debugMode: Boolean, private val desktopMode: Boolea
             buttonRight = MoveButton(TextureLoader.getRightSkin(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
         }
 
+        mainStage.addActor(Exit(context.inject()))
         drawLevel()
         fadeIn(0.3f)
     }

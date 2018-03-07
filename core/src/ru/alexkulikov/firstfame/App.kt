@@ -7,6 +7,7 @@ import ktx.inject.Context
 import ru.alexkulikov.firstfame.screen.GameScreen
 import ru.alexkulikov.firstfame.screen.MainMenu
 import ru.alexkulikov.firstfame.screen.ScreenType
+import ru.alexkulikov.firstfame.screen.test.TestScreen
 
 class App : Game() {
 
@@ -31,6 +32,7 @@ class App : Game() {
 
         currentScreen = when (type) {
             ScreenType.GAME -> GameScreen(context,false, desktopMode = true)
+//            ScreenType.GAME -> TestScreen(context)
             ScreenType.MENU_MAIN -> MainMenu(context)
         }
 

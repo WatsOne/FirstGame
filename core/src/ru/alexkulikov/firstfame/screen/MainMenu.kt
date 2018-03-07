@@ -18,6 +18,7 @@ import ru.alexkulikov.firstfame.GestureController
 import ru.alexkulikov.firstfame.KeyGestureDetector
 import ru.alexkulikov.firstfame.objects.Constants
 import ktx.inject.Context
+import ru.alexkulikov.firstfame.Path
 
 class MainMenu(private val context: Context) : Screen {
 
@@ -54,7 +55,9 @@ class MainMenu(private val context: Context) : Screen {
 
     private fun loadAssets() {
         val manager: AssetManager = context.inject()
-        manager.load("object/coin.atlas", TextureAtlas::class.java)
+        manager.load(Path.coinAtlas, TextureAtlas::class.java)
+        manager.load(Path.woodMaterial, Texture::class.java)
+        manager.load(Path.iceMaterial, Texture::class.java)
     }
 
     override fun hide() {

@@ -1,5 +1,6 @@
 package ru.alexkulikov.firstfame.objects
 
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -9,15 +10,15 @@ class Platform : Box {
 
     lateinit var contactPolygon: Polygon
 
-    constructor(world: World, material: Material, x: Float, y: Float, h: Float, w: Float) : super(world, material, x, y, h, w) {
+    constructor(texture: Texture, world: World, material: Material, x: Float, y: Float, h: Float, w: Float) : super(texture, world, material, x, y, h, w) {
         createContactPolygon(h, w)
     }
 
-    constructor(world: World, material: Material, x: Float, y: Float, h: Float, w: Float, type: BodyDef.BodyType) : super(world, material, x, y, h, w, type) {
+    constructor(texture: Texture, world: World, material: Material, x: Float, y: Float, h: Float, w: Float, type: BodyDef.BodyType) : super(texture, world, material, x, y, h, w, type) {
         createContactPolygon(h, w)
     }
 
-    constructor(world: World, oType: ObjectType, material: Material, x: Float, y: Float, h: Float, w: Float) : super(world, oType, material, x, y, h, w) {
+    constructor(texture: Texture, world: World, oType: ObjectType, material: Material, x: Float, y: Float, h: Float, w: Float) : super(texture, world, oType, material, x, y, h, w) {
         createContactPolygon(h, w)
     }
 

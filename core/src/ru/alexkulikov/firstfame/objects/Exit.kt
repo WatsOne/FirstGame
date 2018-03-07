@@ -23,6 +23,6 @@ class Exit(manager: AssetManager) : FadeActor() {
 
         delta += Gdx.graphics.deltaTime
         val keyFrame = animation.getKeyFrame(delta, true)
-        batch.draw(keyFrame, x, y, originX, originY, width, height, scaleX, scaleY, rotation)
+        batch.draw(keyFrame, x, y, width, height)
     }
 }

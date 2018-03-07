@@ -1,6 +1,9 @@
 package ru.alexkulikov.firstfame.levels
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -9,13 +12,22 @@ import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.XmlReader
+import ru.alexkulikov.firstfame.Path
 import ru.alexkulikov.firstfame.objects.*
 import ru.alexkulikov.firstfame.objects.player.Player
 
-class LevelBuilder(private val world: World) {
+class LevelBuilder(private val world: World, private val manager: AssetManager) {
     private val reader = XmlReader()
     private var contactPlatforms = mutableListOf<Polygon>()
     lateinit var levelGroup: Group
+
+    private val woodTexture: Texture = manager.get(Path.woodMaterial)
+    private val iceTexture: Texture = manager.get(Path.iceMaterial)
+
+    init {
+        woodTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+        iceTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
+    }
 
     fun build(levelName: String, callback: (Float,Float) -> Unit) {
         contactPlatforms.clear()
@@ -40,19 +52,27 @@ class LevelBuilder(private val world: World) {
             val h = java.lang.Float.parseFloat(box.getAttribute("h"))
             val material = Material.valueOf(box.getAttribute("material"))
 
+            val materialTexture = when (material) {
+                Material.wood -> woodTexture
+                Material.ice -> iceTexture
+                else -> {
+                    woodTexture
+                }
+            }
+
             when (type) {
                 "box" -> {
-                    val platform = Platform(world, material, x, y, w, h)
+                    val platform = Platform(materialTexture, world, material, x, y, w, h)
                     contactPlatforms.add(platform.contactPolygon)
                     levelGroup.addActor(platform)
                 }
                 "ground" -> {
-                    val platform = Platform(world, material, x, y, w, h, BodyDef.BodyType.StaticBody)
+                    val platform = Platform(materialTexture, world, material, x, y, w, h, BodyDef.BodyType.StaticBody)
                     contactPlatforms.add(platform.contactPolygon)
                     levelGroup.addActor(platform)
                 }
                 "seesaw" -> {
-                    val platform = Platform(world, ObjectType.SEESAW, material, x, y, w, h)
+                    val platform = Platform(materialTexture, world, ObjectType.SEESAW, material, x, y, w, h)
                     contactPlatforms.add(platform.contactPolygon)
                     levelGroup.addActor(platform)
                 }

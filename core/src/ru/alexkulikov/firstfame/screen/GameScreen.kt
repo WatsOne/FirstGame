@@ -81,7 +81,6 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             buttonRight = MoveButton(TextureLoader.getRightSkin(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
         }
 
-        mainStage.addActor(Exit(context.inject()))
         drawLevel()
         fadeIn(0.3f)
     }
@@ -108,19 +107,12 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             grassDrawer.initialize()
         }
 
-        levelBuilder.build("level4.xml", this::createPlayer)
-        mainStage.addActor(levelBuilder.levelGroup)
+        levelBuilder.build("level4.xml", mainStage, { player = it })
         gameState = GameState.run
-    }
-
-    private fun createPlayer(x: Float, y: Float) {
-        player = QuadPlayer(world, x, y, 0.4f, 0.4f)
-        mainStage.addActor(player)
     }
 
     private fun restart() {
         gameState = GameState.restart
-        player.clearManual()
         levelBuilder.clearLevel()
 
         drawLevel()

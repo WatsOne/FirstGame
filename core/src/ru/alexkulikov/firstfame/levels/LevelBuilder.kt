@@ -3,23 +3,27 @@ package ru.alexkulikov.firstfame.levels
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Polygon
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.Joint
 import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.XmlReader
 import ru.alexkulikov.firstfame.Path
 import ru.alexkulikov.firstfame.objects.*
 import ru.alexkulikov.firstfame.objects.player.Player
+import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 
 class LevelBuilder(private val world: World, private val manager: AssetManager) {
     private val reader = XmlReader()
     private var contactPlatforms = mutableListOf<Polygon>()
-    lateinit var levelGroup: Group
+
+    private lateinit var levelGroup: Group
+    private lateinit var playerActor: Player
+    private lateinit var exitActor: Exit
 
     private val woodTexture: Texture = manager.get(Path.woodMaterial)
     private val iceTexture: Texture = manager.get(Path.iceMaterial)
@@ -29,16 +33,33 @@ class LevelBuilder(private val world: World, private val manager: AssetManager) 
         iceTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
     }
 
-    fun build(levelName: String, callback: (Float,Float) -> Unit) {
+    fun build(levelName: String, stage: Stage, callback: (Player) -> (Unit)) {
         contactPlatforms.clear()
         levelGroup = Group()
 
         val root = reader.parse(Gdx.files.internal("levels/" + levelName))
+
+        buildBoxes(root)
+        stage.addActor(levelGroup)
+
+        val exit = root.getChildByName("exit")
+        val exitPos = parseCoordinates(exit)
+        exitActor = Exit(manager, exitPos.first, exitPos.second)
+        stage.addActor(exitActor)
+
         val player = root.getChildByName("player")
+        val playerPos = parseCoordinates(player)
+        playerActor = QuadPlayer(world, playerPos.first, playerPos.second, 0.4f, 0.4f)
+        stage.addActor(playerActor)
 
-        val playerX = java.lang.Float.parseFloat(player.getAttribute("x"))
-        val playerY = java.lang.Float.parseFloat(player.getAttribute("y"))
+        callback(playerActor)
+    }
 
+    private fun parseCoordinates(element: XmlReader.Element): Pair<Float, Float> {
+        return Pair(element.getFloatAttribute("x"), element.getFloatAttribute("y"))
+    }
+
+    private fun buildBoxes(root: XmlReader.Element) {
         val boxes = root.getChildByName("boxes")
         val boxCount = boxes.childCount
 
@@ -79,8 +100,6 @@ class LevelBuilder(private val world: World, private val manager: AssetManager) 
                 "circle" -> levelGroup.addActor(CircleBox(world, material, x, y, h))
             }
         }
-
-        callback(playerX, playerY)
     }
 
     private fun clearWorld() {
@@ -99,6 +118,8 @@ class LevelBuilder(private val world: World, private val manager: AssetManager) 
 
     fun clearLevel() {
         levelGroup.remove()
+        exitActor.remove()
+        playerActor.remove()
         clearWorld()
     }
 

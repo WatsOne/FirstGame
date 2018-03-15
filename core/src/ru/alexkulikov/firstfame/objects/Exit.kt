@@ -8,14 +8,18 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import ru.alexkulikov.firstfame.FadeActor
 import ru.alexkulikov.firstfame.Path
 
-class Exit(manager: AssetManager) : FadeActor() {
+class Exit(manager: AssetManager, x: Float, y: Float) : FadeActor() {
 
     private val atlas = manager.get(Path.coinAtlas, TextureAtlas::class.java)
     private var animation = Animation(1/12f, atlas.findRegions("coin"), Animation.PlayMode.LOOP)
     private var delta = 0f
 
     init {
-        setBounds(5f, 5f, 0.5f, 0.5f)
+        val w = 0.4f
+        val h = 0.4f
+
+        setBounds(x, y, w, h)
+        setOrigin(w / 2, h / 2)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {
@@ -23,6 +27,6 @@ class Exit(manager: AssetManager) : FadeActor() {
 
         delta += Gdx.graphics.deltaTime
         val keyFrame = animation.getKeyFrame(delta, true)
-        batch.draw(keyFrame, x, y, width, height)
+        batch.draw(keyFrame, x - width / 2, y - height / 2, width, height)
     }
 }

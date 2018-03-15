@@ -11,11 +11,11 @@ import ru.alexkulikov.firstfame.Path
 class Exit(manager: AssetManager) : FadeActor() {
 
     private val atlas = manager.get(Path.coinAtlas, TextureAtlas::class.java)
-    private var animation = Animation(1/9f, atlas.findRegions("coin"), Animation.PlayMode.LOOP)
+    private var animation = Animation(1/12f, atlas.findRegions("coin"), Animation.PlayMode.LOOP)
     private var delta = 0f
 
     init {
-        setBounds(5f, 5f, 1f, 1f)
+        setBounds(5f, 5f, 0.5f, 0.5f)
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) {

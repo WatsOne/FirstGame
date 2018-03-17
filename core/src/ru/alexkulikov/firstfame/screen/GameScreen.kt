@@ -21,6 +21,7 @@ import ru.alexkulikov.firstfame.background.GrassDrawer
 import ru.alexkulikov.firstfame.background.MountainDrawer
 import ru.alexkulikov.firstfame.background.Sky
 import ru.alexkulikov.firstfame.levels.LevelBuilder
+import ru.alexkulikov.firstfame.levels.ZoomManager
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_HEIGHT
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_WIDTH
 import ru.alexkulikov.firstfame.objects.Exit
@@ -47,6 +48,7 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
     private lateinit var player: Player
     private lateinit var gameState: GameState
     private lateinit var levelBuilder: LevelBuilder
+    private val zoomManager = ZoomManager()
 
     private lateinit var buttonLeft: MoveButton
     private lateinit var buttonRight: MoveButton
@@ -60,7 +62,6 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
         mainStage = Stage(FitViewport(VIEWPORT_WIDTH.toFloat(), VIEWPORT_HEIGHT))
         backgroundStage = Stage(FitViewport(VIEWPORT_WIDTH.toFloat(), VIEWPORT_HEIGHT))
         uiStage = Stage(ScreenViewport())
-
 
         if (debugMode) {
             stageRenderer = ShapeRenderer()
@@ -107,20 +108,20 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             grassDrawer.initialize()
         }
 
-        levelBuilder.build("level4.xml", mainStage, { player = it })
+        levelBuilder.build("level4.xml", mainStage)
+
+        player = levelBuilder.playerActor
+        zoomManager.zooms = levelBuilder.zooms
+
         gameState = GameState.run
     }
 
     private fun restart() {
         gameState = GameState.restart
         levelBuilder.clearLevel()
+        zoomManager.restart()
 
         drawLevel()
-    }
-
-    private fun updateZoom() {
-        val zoomY = Math.max(Math.min(player.y, 10f), 1.0f)
-        (mainStage.camera as OrthographicCamera).zoom = zoomY * 0.08f + 0.9f
     }
 
     private fun processJump() {
@@ -169,7 +170,8 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
         uiStage.act(delta)
 
         processMove()
-//        updateZoom()
+        zoomManager.updateZoom(player)
+        (mainStage.camera as OrthographicCamera).zoom = zoomManager.zoomValue
 
         if (debugMode) {
 //            mainStage.draw()

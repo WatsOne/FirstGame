@@ -30,5 +30,8 @@
         <box h="0.4" material="wood" w="0.4" x="24" y="2.2" />
         <box h="0.4" material="wood" w="2.0" x="24" y="2.6" />
     </boxes>
+    <zooms>
+        <zoom x="20" y="3.0" h="5" w="8.0" scale="1.2" />
+    </zooms>
     <exit x="24" y="3.2"/>
 </level>

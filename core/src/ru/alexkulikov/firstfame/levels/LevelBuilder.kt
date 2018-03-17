@@ -20,9 +20,10 @@ import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 class LevelBuilder(private val world: World, private val manager: AssetManager) {
     private val reader = XmlReader()
     private var contactPlatforms = mutableListOf<Polygon>()
+    val zooms = mutableListOf<Zoom>()
 
     private lateinit var levelGroup: Group
-    private lateinit var playerActor: Player
+    lateinit var playerActor: Player
     private lateinit var exitActor: Exit
 
     private val woodTexture: Texture = manager.get(Path.woodMaterial)
@@ -33,14 +34,17 @@ class LevelBuilder(private val world: World, private val manager: AssetManager) 
         iceTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat)
     }
 
-    fun build(levelName: String, stage: Stage, callback: (Player) -> (Unit)) {
+    fun build(levelName: String, stage: Stage) {
         contactPlatforms.clear()
+        zooms.clear()
         levelGroup = Group()
 
         val root = reader.parse(Gdx.files.internal("levels/" + levelName))
 
         buildBoxes(root)
         stage.addActor(levelGroup)
+
+        parseZoom(root)
 
         val exit = root.getChildByName("exit")
         val exitPos = parseCoordinates(exit)
@@ -51,12 +55,28 @@ class LevelBuilder(private val world: World, private val manager: AssetManager) 
         val playerPos = parseCoordinates(player)
         playerActor = QuadPlayer(world, playerPos.first, playerPos.second, 0.4f, 0.4f)
         stage.addActor(playerActor)
-
-        callback(playerActor)
     }
 
     private fun parseCoordinates(element: XmlReader.Element): Pair<Float, Float> {
         return Pair(element.getFloatAttribute("x"), element.getFloatAttribute("y"))
+    }
+
+    private fun parseZoom(root: XmlReader.Element) {
+        val zooms = root.getChildByName("zooms") ?: return
+
+        val zoomCount = zooms.childCount
+
+        (0 until zoomCount).forEach {
+            val zoom = zooms.getChild(it)
+
+            val x = zoom.getFloatAttribute("x")
+            val y = zoom.getFloatAttribute("y")
+            val w = zoom.getFloatAttribute("w")
+            val h = zoom.getFloatAttribute("h")
+            val scale = zoom.getFloatAttribute("scale")
+
+            this.zooms.add(Zoom(x, y, h, w, scale))
+        }
     }
 
     private fun buildBoxes(root: XmlReader.Element) {
@@ -67,10 +87,10 @@ class LevelBuilder(private val world: World, private val manager: AssetManager) 
             val box = boxes.getChild(it)
             val type = box.name
 
-            val x = java.lang.Float.parseFloat(box.getAttribute("x"))
-            val y = java.lang.Float.parseFloat(box.getAttribute("y"))
-            val w = java.lang.Float.parseFloat(box.getAttribute("w"))
-            val h = java.lang.Float.parseFloat(box.getAttribute("h"))
+            val x = box.getFloatAttribute("x")
+            val y = box.getFloatAttribute("y")
+            val w = box.getFloatAttribute("w")
+            val h = box.getFloatAttribute("h")
             val material = Material.valueOf(box.getAttribute("material"))
 
             val materialTexture = when (material) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
@@ -30,6 +31,7 @@ import ru.alexkulikov.firstfame.objects.player.Player
 import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 import ru.alexkulikov.firstfame.objects.ui.ButtonType
 import ru.alexkulikov.firstfame.objects.ui.MoveButton
+import ru.alexkulikov.firstfame.objects.ui.UiButton
 
 class GameScreen(private val context: Context, private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
 
@@ -52,6 +54,7 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
 
     private lateinit var buttonLeft: MoveButton
     private lateinit var buttonRight: MoveButton
+    private lateinit var buttonPause: UiButton
 
     private var leftPressed = false
     private var rightPressed = false
@@ -73,14 +76,18 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             grassDrawer = GrassDrawer(mainStage)
         }
 
+        val manager: AssetManager = context.inject()
+
         stageRenderer = ShapeRenderer()
-        levelBuilder = LevelBuilder(world, context.inject())
+        levelBuilder = LevelBuilder(world, manager)
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
 
         if (!debugMode && !desktopMode) {
             buttonLeft = MoveButton(TextureLoader.getLeftSkin(), ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
             buttonRight = MoveButton(TextureLoader.getRightSkin(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
         }
+
+        buttonPause = UiButton(Gdx.graphics.width - 50f, Gdx.graphics.height - 50f, manager.get(Path.pauseSkin), uiStage, {})
 
         drawLevel()
         fadeIn(0.3f)

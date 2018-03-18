@@ -6,20 +6,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 
-class MoveButton(skin: Skin, type: ButtonType, uiStage: Stage, onTouchUp: () -> Unit,
-                 onTouchDown: () -> Unit) : ImageButton(skin) {
+class UiButton(x: Float, y: Float, skin: Skin, uiStage: Stage, onTouchDown: () -> Unit) : ImageButton(skin) {
     init {
-        when (type) {
-            ButtonType.LEFT -> setBounds(0f,0f,200f,200f)
-            ButtonType.RIGHT -> setBounds(200f,0f,200f,200f)
-        }
+        setBounds(x, y,50f,50f)
 
         uiStage.addActor(this)
 
         addListener(object : InputListener() {
-            override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) =
-                    onTouchUp()
-
             override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
                 onTouchDown()
                 return true

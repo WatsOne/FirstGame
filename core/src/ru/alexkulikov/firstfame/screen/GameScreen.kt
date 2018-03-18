@@ -130,9 +130,9 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             return
         }
 
-        if (levelBuilder.onPlatform(player)) {
+//        if (levelBuilder.onPlatform(player)) {
             player.jumpSmall()
-        }
+//        }
     }
 
     private fun processMove() {

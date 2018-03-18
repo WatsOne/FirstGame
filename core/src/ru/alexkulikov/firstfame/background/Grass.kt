@@ -10,17 +10,14 @@ import ru.alexkulikov.firstfame.TextureLoader
 import ru.alexkulikov.firstfame.objects.Constants.*
 
 class Grass : Actor() {
-    private val sprite: Sprite
-    private val scalableY: Float
+    val sprite: Sprite = Sprite(TextureLoader.getGrass())
+    private val scalableY: Float = VIEWPORT_WIDTH / RATIO_STANDARD
 
     val spriteOffset: Float
         get() = sprite.x + sprite.width
 
     init {
-        setBounds(0f, 0f, 0f, 0f)
-        sprite = Sprite(TextureLoader.getGrass())
-        scalableY = VIEWPORT_WIDTH / RATIO_STANDARD
-        sprite.setBounds(0f, 0f, 0f, 0f)
+        sprite.setBounds(0f, 0f, scalableY, VIEWPORT_WIDTH.toFloat())
     }
 
     override fun draw(batch: Batch, parentAlpha: Float) =

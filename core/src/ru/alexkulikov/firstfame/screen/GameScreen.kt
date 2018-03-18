@@ -7,7 +7,6 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
@@ -25,12 +24,9 @@ import ru.alexkulikov.firstfame.levels.LevelBuilder
 import ru.alexkulikov.firstfame.levels.ZoomManager
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_HEIGHT
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_WIDTH
-import ru.alexkulikov.firstfame.objects.Exit
 import ru.alexkulikov.firstfame.objects.Ground
 import ru.alexkulikov.firstfame.objects.player.Player
-import ru.alexkulikov.firstfame.objects.player.QuadPlayer
 import ru.alexkulikov.firstfame.objects.ui.ButtonType
-import ru.alexkulikov.firstfame.objects.ui.MoveButton
 import ru.alexkulikov.firstfame.objects.ui.UiButton
 
 class GameScreen(private val context: Context, private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
@@ -52,8 +48,8 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
     private lateinit var levelBuilder: LevelBuilder
     private val zoomManager = ZoomManager()
 
-    private lateinit var buttonLeft: MoveButton
-    private lateinit var buttonRight: MoveButton
+    private lateinit var buttonLeft: UiButton
+    private lateinit var buttonRight: UiButton
     private lateinit var buttonPause: UiButton
 
     private var leftPressed = false
@@ -83,11 +79,11 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
 
         if (!debugMode && !desktopMode) {
-            buttonLeft = MoveButton(TextureLoader.getLeftSkin(), ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
-            buttonRight = MoveButton(TextureLoader.getRightSkin(), ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
+            buttonLeft = UiButton(manager, ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
+            buttonRight = UiButton(manager, ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
         }
 
-        buttonPause = UiButton(Gdx.graphics.width - 50f, Gdx.graphics.height - 50f, manager.get(Path.pauseSkin), uiStage, {})
+        buttonPause = UiButton(manager, ButtonType.PAUSE, uiStage, {}, {})
 
         drawLevel()
         fadeIn(0.3f)
@@ -137,9 +133,9 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             return
         }
 
-//        if (levelBuilder.onPlatform(player)) {
+        if (levelBuilder.onPlatform(player)) {
             player.jumpSmall()
-//        }
+        }
     }
 
     private fun processMove() {

@@ -59,7 +59,7 @@ class MainMenu(private val context: Context) : Screen {
         manager.load(Path.coinAtlas, TextureAtlas::class.java)
         manager.load(Path.woodMaterial, Texture::class.java)
         manager.load(Path.iceMaterial, Texture::class.java)
-        manager.load(Path.pauseSkin, Skin::class.java)
+        manager.load(Path.buttonsAtlas, TextureAtlas::class.java)
     }
 
     override fun hide() {

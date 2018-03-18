@@ -1,8 +1,0 @@
-{
-com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	default: {
-		imageUp: ui_pause
-		imageDown: ui_pause_small
-	}
-}
-}

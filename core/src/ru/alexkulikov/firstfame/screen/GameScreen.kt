@@ -55,6 +55,8 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
     private var leftPressed = false
     private var rightPressed = false
 
+    private var pause = false
+
     override fun show() {
         world = World(Vector2(0f, -10f), true)
 
@@ -83,7 +85,7 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             buttonRight = UiButton(manager, ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
         }
 
-        buttonPause = UiButton(manager, ButtonType.PAUSE, uiStage, {}, {})
+        buttonPause = UiButton(manager, ButtonType.PAUSE, uiStage, {}, {pause = !pause})
 
         drawLevel()
         fadeIn(0.3f)
@@ -151,12 +153,13 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
     }
 
     override fun render(delta: Float) {
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0)
+
         if (desktopMode) {
             leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT)
             rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         }
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT or if (Gdx.graphics.bufferFormat.coverageSampling) GL20.GL_COVERAGE_BUFFER_BIT_NV else 0)
 
         if (player.y < 2.0f) {
             gameState = GameState.gameover
@@ -166,11 +169,13 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             mainStage.camera.position.set(player.x + 4, player.y, 0f)
         }
 
-        world.step(1.0f / 60.0f, 6, 2)
+        if (!pause) {
+            world.step(1.0f / 60.0f, 6, 2)
 
-        backgroundStage.act(delta)
-        mainStage.act(delta)
-        uiStage.act(delta)
+            backgroundStage.act(delta)
+            mainStage.act(delta)
+            uiStage.act(delta)
+        }
 
         processMove()
         zoomManager.updateZoom(player)

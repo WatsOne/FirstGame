@@ -38,7 +38,7 @@ class UiButton(manager: AssetManager, type: ButtonType, uiStage: Stage, onTouchU
                 style.imageDown = skin.getDrawable("pause_pressed")
 
                 button = ImageButton(style)
-                button.setBounds(Gdx.graphics.width - 50f, Gdx.graphics.height - 50f,50f,50f)
+                button.setBounds(Gdx.graphics.width - 75f, Gdx.graphics.height - 75f,75f,75f)
             }
         }
 

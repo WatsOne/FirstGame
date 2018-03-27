@@ -26,15 +26,13 @@ import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_HEIGHT
 import ru.alexkulikov.firstfame.objects.Constants.VIEWPORT_WIDTH
 import ru.alexkulikov.firstfame.objects.Ground
 import ru.alexkulikov.firstfame.objects.player.Player
-import ru.alexkulikov.firstfame.objects.ui.ButtonType
-import ru.alexkulikov.firstfame.objects.ui.UiButton
 
 class GameScreen(private val context: Context, private val debugMode: Boolean, private val desktopMode: Boolean) : Screen {
 
     private lateinit var world: World
     private lateinit var mainStage: Stage
     private lateinit var backgroundStage: Stage
-    private lateinit var uiStage: Stage
+    private lateinit var uiStage: UiStage
 
     private lateinit var stageRenderer: ShapeRenderer
     private lateinit var worldRenderer: Box2DDebugRenderer
@@ -48,21 +46,15 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
     private lateinit var levelBuilder: LevelBuilder
     private val zoomManager = ZoomManager()
 
-    private lateinit var buttonLeft: UiButton
-    private lateinit var buttonRight: UiButton
-    private lateinit var buttonPause: UiButton
-
     private var leftPressed = false
     private var rightPressed = false
-
-    private var pause = false
 
     override fun show() {
         world = World(Vector2(0f, -10f), true)
 
         mainStage = Stage(FitViewport(VIEWPORT_WIDTH.toFloat(), VIEWPORT_HEIGHT))
         backgroundStage = Stage(FitViewport(VIEWPORT_WIDTH.toFloat(), VIEWPORT_HEIGHT))
-        uiStage = Stage(ScreenViewport())
+        uiStage = UiStage(ScreenViewport(), context.inject(), debugMode, desktopMode)
 
         if (debugMode) {
             stageRenderer = ShapeRenderer()
@@ -79,13 +71,6 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
         stageRenderer = ShapeRenderer()
         levelBuilder = LevelBuilder(world, manager)
         Gdx.input.inputProcessor = InputMultiplexer(uiStage, KeyGestureDetector(this::processJump, GestureController(this::processJump)))
-
-        if (!debugMode && !desktopMode) {
-            buttonLeft = UiButton(manager, ButtonType.LEFT, uiStage, {leftPressed = false}, {leftPressed = true})
-            buttonRight = UiButton(manager, ButtonType.RIGHT, uiStage, {rightPressed = false}, {rightPressed = true})
-        }
-
-        buttonPause = UiButton(manager, ButtonType.PAUSE, uiStage, {}, {pause = !pause})
 
         drawLevel()
         fadeIn(0.3f)
@@ -159,6 +144,9 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
         if (desktopMode) {
             leftPressed = Gdx.input.isKeyPressed(Input.Keys.LEFT)
             rightPressed = Gdx.input.isKeyPressed(Input.Keys.RIGHT)
+        } else {
+            leftPressed = uiStage.leftPressed
+            rightPressed = uiStage.rightPressed
         }
 
         if (player.y < 2.0f) {
@@ -169,7 +157,7 @@ class GameScreen(private val context: Context, private val debugMode: Boolean, p
             mainStage.camera.position.set(player.x + 4, player.y, 0f)
         }
 
-        if (!pause) {
+        if (!uiStage.pause) {
             world.step(1.0f / 60.0f, 6, 2)
 
             backgroundStage.act(delta)

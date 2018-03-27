@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ru.alexkulikov.firstfame.App
 import ru.alexkulikov.firstfame.GestureController
@@ -59,6 +58,7 @@ class MainMenu(private val context: Context) : Screen {
         manager.load(Path.coinAtlas, TextureAtlas::class.java)
         manager.load(Path.woodMaterial, Texture::class.java)
         manager.load(Path.iceMaterial, Texture::class.java)
+        manager.load(Path.smallMenu, Texture::class.java)
         manager.load(Path.buttonsAtlas, TextureAtlas::class.java)
     }
 

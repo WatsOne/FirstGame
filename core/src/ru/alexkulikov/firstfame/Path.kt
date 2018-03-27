@@ -5,4 +5,5 @@ object Path {
     const val woodMaterial = "materials/wood.png"
     const val iceMaterial = "materials/ice.png"
     const val buttonsAtlas = "ui/buttons.atlas"
+    const val smallMenu = "small_menu_bg.jpg"
 }

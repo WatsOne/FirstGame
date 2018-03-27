@@ -5,14 +5,13 @@ import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import ru.alexkulikov.firstfame.Path
 
-class UiButton(manager: AssetManager, type: ButtonType, uiStage: Stage, onTouchUp: () -> Unit, onTouchDown: () -> Unit) {
+class UiButton(manager: AssetManager, type: ButtonType, onTouchUp: () -> Unit, onTouchDown: () -> Unit) {
 
-    private val button: ImageButton
+    val button: ImageButton
 
     init {
         val skin = Skin(manager.get<TextureAtlas>(Path.buttonsAtlas))
@@ -41,8 +40,6 @@ class UiButton(manager: AssetManager, type: ButtonType, uiStage: Stage, onTouchU
                 button.setBounds(Gdx.graphics.width - 75f, Gdx.graphics.height - 75f,75f,75f)
             }
         }
-
-        uiStage.addActor(button)
 
         button.addListener(object : InputListener() {
             override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) =

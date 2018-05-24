@@ -1,3 +1,6 @@
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+configurations { natives }
 android {
     buildToolsVersion "27.0.3"
     compileSdkVersion 27
@@ -12,13 +15,29 @@ android {
             jniLibs.srcDirs = ['libs']
         }
 
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
     }
     defaultConfig {
         applicationId "ru.alexkulikov.firstfame"
-        minSdkVersion 8
+        minSdkVersion 16
         targetSdkVersion 27
     }
+}
+dependencies {
+    implementation project(":core")
+    implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+    implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
+    implementation "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
 }
 
 
@@ -26,11 +45,11 @@ android {
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
 task copyAndroidNatives() { 
-    file("libs/armeabi/").mkdirs();
-    file("libs/armeabi-v7a/").mkdirs();
-    file("libs/arm64-v8a/").mkdirs();
-    file("libs/x86_64/").mkdirs();
-    file("libs/x86/").mkdirs();
+    file("libs/armeabi/").mkdirs()
+    file("libs/armeabi-v7a/").mkdirs()
+    file("libs/arm64-v8a/").mkdirs()
+    file("libs/x86_64/").mkdirs()
+    file("libs/x86/").mkdirs()
 
     configurations.natives.files.each { jar ->
         def outputDir = null
@@ -94,7 +113,7 @@ eclipse {
     project {
         name = appName + "-android"
         natures 'com.android.ide.eclipse.adt.AndroidNature'
-        buildCommands.clear();
+        buildCommands.clear()
         buildCommand "com.android.ide.eclipse.adt.ResourceManagerBuilder"
         buildCommand "com.android.ide.eclipse.adt.PreCompilerBuilder"
         buildCommand "org.eclipse.jdt.core.javabuilder"
@@ -112,7 +131,7 @@ idea {
             withXml {
                 def node = it.asNode()
                 def builder = NodeBuilder.newInstance();
-                builder.current = node;
+                builder.current = node
                 builder.component(name: "FacetManager") {
                     facet(type: "android", name: "Android") {
                         configuration {
